@@ -29,11 +29,16 @@ document.addEventListener('DOMContentLoaded', () => {
       detenerTodosLosAudios();
       fetchCSV(urls[semestre])
         .then(filas => {
-          datos = filas.filter(f => f['Autor'] && f['Obra'] && f['URL_audio']);
-          if (modo === 'listado') {
-            mostrarListado(datos);
-          } else {
-            iniciarEntrenamiento(datos);
+          try {
+            datos = filas.filter(f => f['Autor'] && f['Obra'] && f['URL_audio']);
+            if (modo === 'listado') {
+              mostrarListado(datos);
+            } else {
+              iniciarEntrenamiento(datos);
+            }
+          } catch (error) {
+            console.error('Error interno:', error);
+            document.getElementById('estado').textContent = 'Error interno al procesar los datos.';
           }
         })
         .catch(() => {
