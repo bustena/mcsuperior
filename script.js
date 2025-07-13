@@ -13,12 +13,10 @@ let modo = 'listado';
 
 document.addEventListener('DOMContentLoaded', () => {
   const modoToggle = document.getElementById('modo-toggle');
-  const modoLabel = document.getElementById('modo-label');
   const botonesSemestre = document.querySelectorAll('.boton-semestre');
 
   modoToggle.addEventListener('change', () => {
     modo = modoToggle.checked ? 'entrenamiento' : 'listado';
-    modoLabel.textContent = modoToggle.checked ? 'Entrenamiento' : 'Listado';
   });
 
   botonesSemestre.forEach(btn => {
@@ -106,6 +104,7 @@ function iniciarEntrenamiento(lista) {
   document.getElementById('vista-entrenamiento').classList.remove('oculto');
   document.getElementById('estado').textContent = '';
   document.getElementById('resultado').textContent = '';
+  document.getElementById('selector-respuesta').innerHTML = '<option value="" disabled selected>Selecciona una obra</option>';
   reproducirNuevaAudicion(lista);
 }
 
