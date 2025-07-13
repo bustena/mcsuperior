@@ -27,6 +27,21 @@ document.addEventListener('DOMContentLoaded', () => {
       botonesSemestre.forEach(b => b.classList.remove('activo'));
       btn.classList.add('activo');
       semestre = btn.dataset.semestre;
+  
+      document.getElementById('estado').textContent = 'Cargando datos...';
+      detenerTodosLosAudios();
+      fetchCSV(urls[semestre])
+        .then(filas => {
+          datos = filas.filter(f => f['Autor'] && f['Obra'] && f['URL_audio']);
+          if (modo === 'listado') {
+            mostrarListado(datos);
+          } else {
+            iniciarEntrenamiento(datos);
+          }
+        })
+        .catch(() => {
+          document.getElementById('estado').textContent = 'Error al cargar los datos.';
+        });
     });
   });
 
@@ -93,8 +108,8 @@ function mostrarListado(lista) {
       <div class="audicion-audio">
         <audio controls src="${item.URL_audio}"></audio>
         <div>
-          <button class="boton-enlace" data-tooltip="${item.U_titulo}" onclick="window.open('${item.U_url}', '_blank')">U</button>
-          <button class="boton-enlace" data-tooltip="${item.E_titulo}" onclick="window.open('${item.E_url}', '_blank')">E</button>
+          <button class="boton-enlace boton-u" data-tooltip="${item.U_titulo}" onclick="window.open('${item.U_url}', '_blank')">U</button>
+          <button class="boton-enlace boton-e" data-tooltip="${item.E_titulo}" onclick="window.open('${item.E_url}', '_blank')">E</button>
         </div>
       </div>
     `;
