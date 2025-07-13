@@ -111,3 +111,8 @@ input:checked + .slider:before {
   font-size: 0.8em;
   z-index: 10;
 }
+
+.oculto {
+  display: none;
+}
+
