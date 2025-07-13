@@ -66,13 +66,21 @@ header h1 {
   transition: background-color 0.2s;
 }
 
+.boton-semestre[data-semestre="SUP1"] {
+  background-color: #e3d3f1; /* morado claro */
+}
+
 .boton-semestre.activo[data-semestre="SUP1"] {
-  background-color: #8e44ad;
+  background-color: #8e44ad; /* morado intenso */
   color: white;
 }
 
+.boton-semestre[data-semestre="SUP2"] {
+  background-color: #fddcd5; /* coral claro */
+}
+
 .boton-semestre.activo[data-semestre="SUP2"] {
-  background-color: #fe7857;
+  background-color: #fe7857; /* coral fuerte */
   color: white;
 }
 
@@ -90,7 +98,7 @@ header h1 {
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  background-color: #a3c86d; /* verde lima Classlife */
+  background-color: #f39c12; /* naranja Classlife */
   padding: 1rem 1.5rem;
   border-radius: 12px;
   font-weight: bold;
