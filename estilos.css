@@ -288,7 +288,7 @@ input:checked + .slider:before {
 
 /* === Ocultación de vistas === */
 .oculto {
-  display: none;
+  display: none !important;
 }
 
 /* === Adaptación móvil === */
