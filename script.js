@@ -9,9 +9,41 @@ let audio = null;
 let inicio = 0;
 let fin = 0;
 
+// Detectar semestre activo desde botón
+function obtenerSemestreActivo() {
+  const activo = document.querySelector('.boton-semestre.activo');
+  return activo ? activo.dataset.semestre : null;
+}
+
+// Detectar modo activo desde interruptor
+function obtenerModoActivo() {
+  const toggle = document.getElementById('modo-toggle');
+  return toggle.checked ? 'entrenamiento' : 'listado';
+}
+
+// Actualizar etiqueta del modo al cambiar interruptor
+document.getElementById('modo-toggle').addEventListener('change', () => {
+  const label = document.getElementById('modo-label');
+  label.textContent = obtenerModoActivo() === 'entrenamiento' ? 'Entrenamiento' : 'Listado';
+});
+
+// Activar botón de semestre al pulsar
+document.querySelectorAll('.boton-semestre').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.boton-semestre').forEach(b => b.classList.remove('activo'));
+    btn.classList.add('activo');
+  });
+});
+
+// Botón principal "Comenzar"
 document.getElementById('cargar').addEventListener('click', () => {
-  const semestre = document.getElementById('semestre').value;
-  const modo = document.getElementById('modo').value;
+  const semestre = obtenerSemestreActivo();
+  const modo = obtenerModoActivo();
+
+  if (!semestre) {
+    document.getElementById('estado').textContent = 'Selecciona un semestre.';
+    return;
+  }
 
   document.getElementById('estado').textContent = 'Cargando datos...';
   detenerTodosLosAudios();
@@ -51,11 +83,14 @@ function mostrarListado(lista) {
   contenedor.innerHTML = '';
   lista.forEach(item => {
     const bloque = document.createElement('div');
+    bloque.classList.add('tarjeta-audicion');
     bloque.innerHTML = `
       <h3>${item.Autor}: ${item.Obra}</h3>
       <audio controls src="${item.URL_audio}"></audio>
-      <p><a href="${item.U_url}" target="_blank">${item.U_titulo}</a></p>
-      <p><a href="${item.E_url}" target="_blank">${item.E_titulo}</a></p>
+      <div class="botones-enlaces">
+        <button class="boton-enlace boton-u" data-tooltip="${item.U_titulo}" onclick="window.open('${item.U_url}', '_blank')">U</button>
+        <button class="boton-enlace boton-e" data-tooltip="${item.E_titulo}" onclick="window.open('${item.E_url}', '_blank')">E</button>
+      </div>
     `;
     contenedor.appendChild(bloque);
   });
@@ -71,7 +106,6 @@ function iniciarEntrenamiento(lista) {
 
 function reproducirNuevaAudicion(lista) {
   actual = lista[Math.floor(Math.random() * lista.length)];
-  const contenedor = document.getElementById('entrenamiento-audio');
   const indicador = document.getElementById('indicador');
   indicador.textContent = '● ● ● Cargando...';
 
@@ -103,7 +137,7 @@ function reproducirNuevaAudicion(lista) {
     };
   });
 
-  // Configurar botones
+  // Controles
   const playPauseBtn = document.getElementById('play-pause');
   playPauseBtn.textContent = '⏸️';
   playPauseBtn.onclick = () => {
@@ -130,7 +164,7 @@ function reproducirNuevaAudicion(lista) {
     }
   };
 
-  // Poner opciones en el desplegable
+  // Desplegable con opciones
   const selector = document.getElementById('selector-respuesta');
   selector.innerHTML = '';
   lista.forEach(item => {
@@ -170,7 +204,7 @@ document.getElementById('siguiente').addEventListener('click', () => {
   reproducirNuevaAudicion(datos);
 });
 
-// Al reproducir un audio visible, parar los demás
+// Silenciar audios visibles si se activa otro
 document.addEventListener('play', function (e) {
   const audios = document.querySelectorAll('audio');
   audios.forEach(audio => {
