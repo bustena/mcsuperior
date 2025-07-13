@@ -13,10 +13,12 @@ let modo = 'listado';
 
 document.addEventListener('DOMContentLoaded', () => {
   const modoToggle = document.getElementById('modo-toggle');
+  const modoLabel = document.getElementById('modo-label');
   const botonesSemestre = document.querySelectorAll('.boton-semestre');
 
   modoToggle.addEventListener('change', () => {
     modo = modoToggle.checked ? 'entrenamiento' : 'listado';
+    modoLabel.textContent = modoToggle.checked ? 'Entrenamiento' : 'Listado';
   });
 
   botonesSemestre.forEach(btn => {
@@ -24,16 +26,15 @@ document.addEventListener('DOMContentLoaded', () => {
       botonesSemestre.forEach(b => b.classList.remove('activo'));
       btn.classList.add('activo');
       semestre = btn.dataset.semestre;
+
       document.getElementById('estado').textContent = 'Cargando datos...';
       detenerTodosLosAudios();
       fetchCSV(urls[semestre])
         .then(filas => {
           datos = filas.filter(f => f['Autor'] && f['Obra'] && f['URL_audio']);
           if (modo === 'listado') {
-            document.getElementById('vista-entrenamiento').classList.add('oculto');
             mostrarListado(datos);
           } else {
-            document.getElementById('vista-listado').classList.add('oculto');
             iniciarEntrenamiento(datos);
           }
         })
@@ -103,6 +104,7 @@ function iniciarEntrenamiento(lista) {
   detenerTodosLosAudios();
   document.getElementById('vista-listado').classList.add('oculto');
   document.getElementById('vista-entrenamiento').classList.remove('oculto');
+  document.getElementById('estado').textContent = '';
   document.getElementById('resultado').textContent = '';
   reproducirNuevaAudicion(lista);
 }
@@ -111,6 +113,10 @@ function reproducirNuevaAudicion(lista) {
   actual = lista[Math.floor(Math.random() * lista.length)];
   const indicador = document.getElementById('indicador');
   indicador.textContent = '● ● ● Cargando...';
+
+  const playIcon = document.querySelector('#play-pause i');
+  playIcon.setAttribute('data-lucide', 'pause');
+  lucide.createIcons();
 
   if (audio) {
     audio.pause();
@@ -136,6 +142,8 @@ function reproducirNuevaAudicion(lista) {
       if (audio.currentTime >= fin) {
         audio.pause();
         indicador.textContent = '■ Fin del fragmento';
+        playIcon.setAttribute('data-lucide', 'play');
+        lucide.createIcons();
       }
     };
   });
@@ -146,9 +154,11 @@ function reproducirNuevaAudicion(lista) {
     if (audio.paused) {
       audio.play();
       icono.setAttribute('data-lucide', 'pause');
+      indicador.textContent = '● ● ● Reproduciendo...';
     } else {
       audio.pause();
       icono.setAttribute('data-lucide', 'play');
+      indicador.textContent = '⏸️ Pausado';
     }
     lucide.createIcons();
   };
