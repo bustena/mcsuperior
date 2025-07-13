@@ -12,9 +12,7 @@ let semestre = 'SUP1';
 let modo = 'listado';
 
 document.addEventListener('DOMContentLoaded', () => {
-
   const modoToggle = document.getElementById('modo-toggle');
-  const modoLabel = document.getElementById('modo-label');
   const botonesSemestre = document.querySelectorAll('.boton-semestre');
 
   modoToggle.addEventListener('change', () => {
@@ -26,17 +24,16 @@ document.addEventListener('DOMContentLoaded', () => {
       botonesSemestre.forEach(b => b.classList.remove('activo'));
       btn.classList.add('activo');
       semestre = btn.dataset.semestre;
-  
       document.getElementById('estado').textContent = 'Cargando datos...';
       detenerTodosLosAudios();
-      document.getElementById('vista-listado').classList.add('oculto');
-      document.getElementById('vista-entrenamiento').classList.add('oculto');
       fetchCSV(urls[semestre])
         .then(filas => {
           datos = filas.filter(f => f['Autor'] && f['Obra'] && f['URL_audio']);
           if (modo === 'listado') {
+            document.getElementById('vista-entrenamiento').classList.add('oculto');
             mostrarListado(datos);
           } else {
+            document.getElementById('vista-listado').classList.add('oculto');
             iniciarEntrenamiento(datos);
           }
         })
@@ -44,24 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
           document.getElementById('estado').textContent = 'Error al cargar los datos.';
         });
     });
-  });
-
-  document.getElementById('cargar').addEventListener('click', () => {
-    document.getElementById('estado').textContent = 'Cargando datos...';
-    detenerTodosLosAudios();
-    console.log(semestre)
-    fetchCSV(urls[semestre])
-      .then(filas => {
-        datos = filas.filter(f => f['Autor'] && f['Obra'] && f['URL_audio']);
-        if (modo === 'listado') {
-          mostrarListado(datos);
-        } else {
-          iniciarEntrenamiento(datos);
-        }
-      })
-      .catch(() => {
-        document.getElementById('estado').textContent = 'Error al cargar los datos.';
-      });
   });
 
   document.getElementById('verificar').addEventListener('click', () => {
@@ -80,6 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('resultado').textContent = '';
     reproducirNuevaAudicion(datos);
   });
+
+  lucide.createIcons();
 });
 
 function fetchCSV(url) {
@@ -161,15 +142,15 @@ function reproducirNuevaAudicion(lista) {
 
   document.getElementById('play-pause').onclick = () => {
     if (!audio) return;
+    const icono = document.querySelector('#play-pause i');
     if (audio.paused) {
       audio.play();
-      document.getElementById('play-pause').textContent = '⏸️';
-      indicador.textContent = '● ● ● Reproduciendo...';
+      icono.setAttribute('data-lucide', 'pause');
     } else {
       audio.pause();
-      document.getElementById('play-pause').textContent = '▶️';
-      indicador.textContent = '⏸️ Pausado';
+      icono.setAttribute('data-lucide', 'play');
     }
+    lucide.createIcons();
   };
 
   document.getElementById('retroceder').onclick = () => {
