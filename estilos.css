@@ -3,39 +3,79 @@ body {
   font-family: "Segoe UI", sans-serif;
   background: #f2f2f2;
   color: #333;
-  margin: 1.5em;
+  margin: 1.5rem;
+}
+
+#estado {
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: center;
+  color: #5c3e36;
+  margin-top: 1.5rem;
 }
 
 #selector-vista {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1em;
-  margin-bottom: 2em;
+  gap: 1.8rem;
+  margin-bottom: 3rem;
+  font-size: 1.2rem;
+}
+
+#cargar {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  background-color: #f39c12; /* naranja Classlife */
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#cargar:hover {
+  background-color: #d35400;
 }
 
 /* Botones semestre */
 .boton-semestre {
-  padding: 0.8em 1.2em;
+  padding: 1rem 1.6rem;
   font-weight: bold;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   background-color: #ddd;
   cursor: pointer;
-  margin: 0 0.5em;
+  margin: 0 0.6rem;
+  font-size: 1rem;
+  transition: background-color 0.2s;
 }
 
-.boton-semestre.activo {
-  background-color: #8e44ad; /* morado Classlife */
+.boton-semestre.activo[data-semestre="SUP1"] {
+  background-color: #8e44ad; /* morado */
+  color: white;
+}
+
+.boton-semestre.activo[data-semestre="SUP2"] {
+  background-color: #e74c3c; /* rojo intenso estilo Classlife */
   color: white;
 }
 
 /* Interruptor tipo toggle */
+#interruptor-modo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
 .switch {
   position: relative;
   display: inline-block;
-  width: 50px;
-  height: 26px;
+  width: 60px;
+  height: 30px;
 }
 
 .switch input {
@@ -46,7 +86,7 @@ body {
 
 .slider {
   background-color: #ccc;
-  border-radius: 26px;
+  border-radius: 30px;
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -59,13 +99,14 @@ body {
 .slider:before {
   content: "";
   position: absolute;
-  height: 20px;
-  width: 20px;
+  height: 24px;
+  width: 24px;
   left: 3px;
   bottom: 3px;
   background-color: white;
   transition: .4s;
   border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 input:checked + .slider {
@@ -73,14 +114,19 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-  transform: translateX(24px);
+  transform: translateX(30px);
+}
+
+#modo-label {
+  font-size: 1rem;
+  color: #5c3e36;
 }
 
 /* Botones U / E unificados */
 .boton-enlace {
   display: inline-block;
   margin-left: 0.3rem;
-  padding: 0.4em 0.8em;
+  padding: 0.4rem 0.8rem;
   border: none;
   border-radius: 6px;
   background-color: #765348;
@@ -107,7 +153,7 @@ input:checked + .slider:before {
   padding: 6px 10px;
   border-radius: 4px;
   white-space: nowrap;
-  font-size: 0.8em;
+  font-size: 0.8rem;
   z-index: 10;
 }
 
@@ -151,4 +197,16 @@ input:checked + .slider:before {
 /* Ocultación de vistas */
 .oculto {
   display: none;
+}
+
+/* Adaptación a móviles */
+@media (max-width: 600px) {
+  #cargar {
+    width: 100%;
+    font-size: 1.2rem;
+  }
+
+  .audicion-caja {
+    width: 90%;
+  }
 }
