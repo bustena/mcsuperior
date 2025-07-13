@@ -87,12 +87,15 @@ function mostrarListado(lista) {
   contenedor.innerHTML = '';
   lista.forEach(item => {
     const bloque = document.createElement('div');
+    bloque.className = 'audicion-caja';
     bloque.innerHTML = `
-      <h3>${item.Autor}: ${item.Obra}</h3>
-      <audio controls src="${item.URL_audio}"></audio>
-      <div>
-        <button class="boton-enlace boton-u" data-tooltip="${item.U_titulo}" onclick="window.open('${item.U_url}', '_blank')">U</button>
-        <button class="boton-enlace boton-e" data-tooltip="${item.E_titulo}" onclick="window.open('${item.E_url}', '_blank')">E</button>
+      <div class="audicion-titulo">${item.Autor}: ${item.Obra}</div>
+      <div class="audicion-audio">
+        <audio controls src="${item.URL_audio}"></audio>
+        <div>
+          <button class="boton-enlace" data-tooltip="${item.U_titulo}" onclick="window.open('${item.U_url}', '_blank')">U</button>
+          <button class="boton-enlace" data-tooltip="${item.E_titulo}" onclick="window.open('${item.E_url}', '_blank')">E</button>
+        </div>
       </div>
     `;
     contenedor.appendChild(bloque);
