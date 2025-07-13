@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audiciones Historia de la Música</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <header>
+    <h1>Audiciones – Historia de la Música</h1>
+    <div id="selector">
+      <label for="semestre">Semestre:</label>
+      <select id="semestre">
+        <option value="SUP1">1.º semestre</option>
+        <option value="SUP2">2.º semestre</option>
+      </select>
+
+      <label for="modo">Modo:</label>
+      <select id="modo">
+        <option value="listado">Listado</option>
+        <option value="entrenamiento">Entrenamiento</option>
+      </select>
+
+      <button id="cargar">Cargar</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="estado">Selecciona un semestre y un modo para comenzar.</div>
+
+    <div id="vista-listado" class="oculto"></div>
+    <div id="vista-entrenamiento" class="oculto">
+      <div id="entrenamiento-audio"></div>
+      <select id="selector-respuesta"></select>
+      <button id="verificar">Verificar</button>
+      <div id="resultado"></div>
+      <button id="siguiente">Siguiente audición</button>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
