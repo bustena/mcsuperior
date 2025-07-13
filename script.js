@@ -63,20 +63,69 @@ function iniciarEntrenamiento(lista) {
 
 let actual = null;
 
+let audio;
+let inicio = 0;
+let fin = 0;
+let actual = null;
+
 function reproducirNuevaAudicion(lista) {
   actual = lista[Math.floor(Math.random() * lista.length)];
   const contenedor = document.getElementById('entrenamiento-audio');
-  contenedor.innerHTML = '';
-  const audio = document.createElement('audio');
-  audio.controls = true;
-  audio.src = actual.URL_audio;
+  const indicador = document.getElementById('indicador');
+  indicador.textContent = '● ● ● Cargando...';
+
+  if (audio) {
+    audio.pause();
+    audio.remove();
+  }
+
+  audio = new Audio(actual.URL_audio);
   audio.addEventListener('loadedmetadata', () => {
     const duracion = audio.duration;
-    const inicio = Math.max(0, Math.random() * (duracion - 90));
-    audio.currentTime = inicio;
-  });
-  contenedor.appendChild(audio);
+    if (duracion <= 90) {
+      inicio = 0;
+      fin = duracion;
+    } else {
+      inicio = Math.random() * (duracion - 90);
+      fin = inicio + 90;
+    }
 
+    audio.currentTime = inicio;
+    audio.play();
+    indicador.textContent = '● ● ● Reproduciendo...';
+
+    audio.ontimeupdate = () => {
+      if (audio.currentTime >= fin) {
+        audio.pause();
+        indicador.textContent = '■ Fin del fragmento';
+      }
+    };
+  });
+
+  // Configurar botones
+  const playPauseBtn = document.getElementById('play-pause');
+  playPauseBtn.textContent = '⏸️';
+  playPauseBtn.onclick = () => {
+    if (audio.paused) {
+      audio.play();
+      playPauseBtn.textContent = '⏸️';
+      indicador.textContent = '● ● ● Reproduciendo...';
+    } else {
+      audio.pause();
+      playPauseBtn.textContent = '▶️';
+      indicador.textContent = '⏸️ Pausado';
+    }
+  };
+
+  document.getElementById('retroceder').onclick = () => {
+    audio.currentTime = Math.max(inicio, audio.currentTime - 5);
+  };
+
+  document.getElementById('avanzar').onclick = () => {
+    audio.currentTime = Math.min(fin, audio.currentTime + 5);
+  };
+
+  // Poner opciones en el desplegable
   const selector = document.getElementById('selector-respuesta');
   selector.innerHTML = '';
   lista.forEach(item => {
