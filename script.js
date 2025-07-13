@@ -8,10 +8,10 @@ let actual = null;
 let audio = null;
 let inicio = 0;
 let fin = 0;
+let semestre = 'SUP1';
+let modo = 'listado';
 
 document.addEventListener('DOMContentLoaded', () => {
-  let semestre = 'SUP1';
-  let modo = 'listado';
 
   const modoToggle = document.getElementById('modo-toggle');
   const modoLabel = document.getElementById('modo-label');
