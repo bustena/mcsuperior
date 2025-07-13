@@ -9,21 +9,22 @@
 <body>
   <header>
     <h1>Audiciones – Historia de la Música</h1>
-    <div id="selector">
-      <label for="semestre">Semestre:</label>
-      <select id="semestre">
-        <option value="SUP1">1.º semestre</option>
-        <option value="SUP2">2.º semestre</option>
-      </select>
+    <section id="selector-vista">
+      <div id="interruptor-modo">
+        <label class="switch">
+          <input type="checkbox" id="modo-toggle">
+          <span class="slider"></span>
+        </label>
+        <span id="modo-label">Listado</span>
+      </div>
 
-      <label for="modo">Modo:</label>
-      <select id="modo">
-        <option value="listado">Listado</option>
-        <option value="entrenamiento">Entrenamiento</option>
-      </select>
+      <div id="botones-semestre">
+        <button class="boton-semestre activo" data-semestre="SUP1">1.º semestre</button>
+        <button class="boton-semestre" data-semestre="SUP2">2.º semestre</button>
+      </div>
 
-      <button id="cargar">Cargar</button>
-    </div>
+      <button id="cargar">Comenzar</button>
+    </section>
   </header>
 
   <main>
