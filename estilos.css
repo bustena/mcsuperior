@@ -1,4 +1,4 @@
-/* Estilo general inspirado en Classlife */
+/* === Estilo general inspirado en Classlife === */
 body {
   font-family: "Segoe UI", sans-serif;
   background: #f2f2f2;
@@ -6,6 +6,7 @@ body {
   margin: 1.5rem;
 }
 
+/* === Cabecera principal === */
 header h1 {
   text-align: center;
   background-color: #335497; /* azul marino Classlife */
@@ -20,6 +21,7 @@ header h1 {
   margin: 2rem auto;
 }
 
+/* === Mensaje inicial === */
 #estado {
   font-size: 1.4rem;
   font-weight: 600;
@@ -28,6 +30,7 @@ header h1 {
   margin-top: 1.5rem;
 }
 
+/* === Selector de modo y semestre === */
 #selector-vista {
   display: flex;
   flex-direction: column;
@@ -37,23 +40,7 @@ header h1 {
   font-size: 1.2rem;
 }
 
-#cargar {
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  background-color: #f39c12; /* naranja Classlife */
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-#cargar:hover {
-  background-color: #d35400;
-}
-
-/* Botones semestre */
+/* === Botones de semestre === */
 .boton-semestre {
   padding: 1rem 1.6rem;
   font-weight: bold;
@@ -71,7 +58,7 @@ header h1 {
 }
 
 .boton-semestre.activo[data-semestre="SUP1"] {
-  background-color: #8e44ad; /* morado intenso */
+  background-color: #8e44ad;
   color: white;
 }
 
@@ -84,15 +71,7 @@ header h1 {
   color: white;
 }
 
-.boton-u {
-  background-color: #3498db; /* azul */
-}
-
-.boton-e {
-  background-color: #e67e22; /* naranja */
-}
-
-/* Interruptor tipo toggle */
+/* === Caja interruptor de modo === */
 #interruptor-modo {
   display: flex;
   align-items: center;
@@ -112,6 +91,7 @@ header h1 {
   text-align: center;
 }
 
+/* === Estilo visual del interruptor === */
 .switch {
   position: relative;
   display: inline-block;
@@ -158,42 +138,7 @@ input:checked + .slider:before {
   transform: translateX(30px);
 }
 
-/* Botones U / E unificados */
-.boton-enlace {
-  display: inline-block;
-  margin-left: 0.3rem;
-  padding: 0.4rem 0.8rem;
-  border: none;
-  border-radius: 6px;
-  background-color: #765348;
-  color: white;
-  font-weight: bold;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  position: relative;
-}
-
-.boton-enlace:hover {
-  background-color: #5c3e36;
-}
-
-.boton-enlace:hover::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: 125%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #333;
-  color: white;
-  padding: 6px 10px;
-  border-radius: 4px;
-  white-space: nowrap;
-  font-size: 0.8rem;
-  z-index: 10;
-}
-
-/* Vista listado */
+/* === Vista listado === */
 #vista-listado {
   display: flex;
   flex-direction: column;
@@ -230,6 +175,42 @@ input:checked + .slider:before {
   margin-right: 0.5rem;
 }
 
+/* === Botones U y E === */
+.boton-enlace {
+  display: inline-block;
+  margin-left: 0.3rem;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #765348;
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  position: relative;
+}
+
+.boton-enlace:hover {
+  background-color: #5c3e36;
+}
+
+.boton-enlace:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  font-size: 0.8rem;
+  z-index: 10;
+}
+
+/* === Controles en modo entrenamiento === */
 #controles button {
   font-size: 1.5rem;
   background-color: #765348;
@@ -246,18 +227,13 @@ input:checked + .slider:before {
   background-color: #5c3e36;
 }
 
-/* Ocultación de vistas */
+/* === Ocultación de vistas === */
 .oculto {
   display: none;
 }
 
-/* Adaptación a móviles */
+/* === Adaptación móvil === */
 @media (max-width: 600px) {
-  #cargar {
-    width: 100%;
-    font-size: 1.2rem;
-  }
-
   .audicion-caja {
     width: 90%;
   }
