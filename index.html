@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <script src="https://unpkg.com/lucide@latest"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="https://play-lh.googleusercontent.com/vJnaD_ne3DpsrlXgxfhnavigSOs6xk9FEJHcsWhrm7045VdoE6Brz34PXpKLIkkMVWM" type="image/png">
   <title>Audiciones Historia de la Música</title>
@@ -36,11 +37,17 @@
     <div id="vista-entrenamiento" class="oculto">
       <div id="entrenamiento-audio">
         <div id="indicador">● ● ● Reproduciendo...</div>
-        <div id="controles">
-          <button id="retroceder">⏪</button>
-          <button id="play-pause">⏸️</button>
-          <button id="avanzar">⏩</button>
-        </div>
+          <div id="controles">
+            <button id="retroceder" aria-label="Rebobinar">
+              <i data-lucide="rewind"></i>
+            </button>
+            <button id="play-pause" aria-label="Reproducir / Pausar">
+              <i data-lucide="pause"></i>
+            </button>
+            <button id="avanzar" aria-label="Avanzar">
+              <i data-lucide="fast-forward"></i>
+            </button>
+          </div>
       </div>
 
       <select id="selector-respuesta"></select>
