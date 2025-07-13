@@ -212,7 +212,6 @@ input:checked + .slider:before {
 
 /* === Controles en modo entrenamiento === */
 #controles button {
-  font-size: 1.5rem;
   background-color: #765348;
   color: white;
   border: none;
@@ -221,10 +220,19 @@ input:checked + .slider:before {
   margin: 0 0.5rem;
   cursor: pointer;
   transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #controles button:hover {
   background-color: #5c3e36;
+}
+
+#controles i {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor; /* asegura que el icono sea blanco */
 }
 
 /* === Ocultación de vistas === */
