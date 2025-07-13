@@ -29,6 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
       document.getElementById('estado').textContent = 'Cargando datos...';
       detenerTodosLosAudios();
+      document.getElementById('vista-listado').classList.add('oculto');
+      document.getElementById('vista-entrenamiento').classList.add('oculto');
       fetchCSV(urls[semestre])
         .then(filas => {
           datos = filas.filter(f => f['Autor'] && f['Obra'] && f['URL_audio']);
@@ -179,7 +181,7 @@ function reproducirNuevaAudicion(lista) {
   };
 
   const selector = document.getElementById('selector-respuesta');
-  selector.innerHTML = '';
+  selector.innerHTML = '<option value="" disabled selected>Selecciona una obra</option>';
   lista.forEach(item => {
     const opcion = document.createElement('option');
     opcion.value = `${item.Autor}: ${item.Obra}`;
