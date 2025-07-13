@@ -19,33 +19,43 @@ document.addEventListener('DOMContentLoaded', () => {
     modo = modoToggle.checked ? 'entrenamiento' : 'listado';
   });
 
-  botonesSemestre.forEach(btn => {
-    btn.addEventListener('click', () => {
-      botonesSemestre.forEach(b => b.classList.remove('activo'));
-      btn.classList.add('activo');
-      semestre = btn.dataset.semestre;
+botonesSemestre.forEach(btn => {
+  btn.addEventListener('click', () => {
+    // Actualizar visualmente el botón activo
+    botonesSemestre.forEach(b => b.classList.remove('activo'));
+    btn.classList.add('activo');
+    semestre = btn.dataset.semestre;
 
-      document.getElementById('estado').textContent = 'Cargando datos...';
-      detenerTodosLosAudios();
-      fetchCSV(urls[semestre])
-        .then(filas => {
-          try {
-            datos = filas.filter(f => f['Autor'] && f['Obra'] && f['URL_audio']);
-            if (modo === 'listado') {
-              mostrarListado(datos);
-            } else {
-              iniciarEntrenamiento(datos);
-            }
-          } catch (error) {
-            console.error('Error interno:', error);
-            document.getElementById('estado').textContent = 'Error interno al procesar los datos.';
-          }
-        })
-        .catch(() => {
-          document.getElementById('estado').textContent = 'Error al cargar los datos.';
-        });
-    });
+    // Mostrar mensaje de carga y detener cualquier audio
+    document.getElementById('estado').textContent = 'Cargando datos...';
+    detenerTodosLosAudios();
+
+    // Ocultar ambas vistas antes de cargar
+    document.getElementById('vista-entrenamiento').classList.add('oculto');
+    document.getElementById('vista-listado').classList.add('oculto');
+
+    // Obtener los datos
+    fetchCSV(urls[semestre])
+      .then(filas => {
+        datos = filas.filter(f => f['Autor'] && f['Obra'] && f['URL_audio']);
+
+        if (datos.length === 0) {
+          document.getElementById('estado').textContent = 'No se encontraron datos válidos.';
+          return;
+        }
+
+        if (modo === 'listado') {
+          mostrarListado(datos);
+        } else {
+          iniciarEntrenamiento(datos);
+        }
+      })
+      .catch(error => {
+        console.error('Error al cargar los datos:', error);
+        document.getElementById('estado').textContent = 'Error al cargar los datos.';
+      });
   });
+});
 
   document.getElementById('verificar').addEventListener('click', () => {
     const seleccion = document.getElementById('selector-respuesta').value;
