@@ -10,6 +10,7 @@ document.getElementById('cargar').addEventListener('click', () => {
   const modo = document.getElementById('modo').value;
 
   document.getElementById('estado').textContent = 'Cargando datos...';
+  detenerTodosLosAudios(); // <- aquí
   fetchCSV(urls[semestre])
     .then(filas => {
       datos = filas.filter(fila => fila['Autor'] && fila['Obra'] && fila['URL_audio']);
