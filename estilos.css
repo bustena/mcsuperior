@@ -72,7 +72,7 @@ header h1 {
 }
 
 .boton-semestre.activo[data-semestre="SUP2"] {
-  background-color: #f39c12; /* mismo naranja que "Comenzar" */
+  background-color: #fe7857;
   color: white;
 }
 
