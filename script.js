@@ -86,6 +86,14 @@ function reproducirNuevaAudicion(lista) {
   });
 }
 
+function detenerTodosLosAudios() {
+  const audios = document.querySelectorAll('audio');
+  audios.forEach(audio => {
+    audio.pause();
+    audio.currentTime = 0;
+  });
+}
+
 document.getElementById('verificar').addEventListener('click', () => {
   const seleccion = document.getElementById('selector-respuesta').value;
   const resultado = document.getElementById('resultado');
