@@ -9,57 +9,60 @@ let audio = null;
 let inicio = 0;
 let fin = 0;
 
-// Detectar semestre activo desde botón
-function obtenerSemestreActivo() {
-  const activo = document.querySelector('.boton-semestre.activo');
-  return activo ? activo.dataset.semestre : null;
-}
+document.addEventListener('DOMContentLoaded', () => {
+  let semestre = 'SUP1';
+  let modo = 'listado';
 
-// Detectar modo activo desde interruptor
-function obtenerModoActivo() {
-  const toggle = document.getElementById('modo-toggle');
-  return toggle.checked ? 'entrenamiento' : 'listado';
-}
+  const modoToggle = document.getElementById('modo-toggle');
+  const modoLabel = document.getElementById('modo-label');
+  const botonesSemestre = document.querySelectorAll('.boton-semestre');
 
-// Actualizar etiqueta del modo al cambiar interruptor
-document.getElementById('modo-toggle').addEventListener('change', () => {
-  const label = document.getElementById('modo-label');
-  label.textContent = obtenerModoActivo() === 'entrenamiento' ? 'Entrenamiento' : 'Listado';
-});
-
-// Activar botón de semestre al pulsar
-document.querySelectorAll('.boton-semestre').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.boton-semestre').forEach(b => b.classList.remove('activo'));
-    btn.classList.add('activo');
+  modoToggle.addEventListener('change', () => {
+    modo = modoToggle.checked ? 'entrenamiento' : 'listado';
+    modoLabel.textContent = modoToggle.checked ? 'Entrenamiento' : 'Listado';
   });
-});
 
-// Botón principal "Comenzar"
-document.getElementById('cargar').addEventListener('click', () => {
-  const semestre = obtenerSemestreActivo();
-  const modo = obtenerModoActivo();
-
-  if (!semestre) {
-    document.getElementById('estado').textContent = 'Selecciona un semestre.';
-    return;
-  }
-
-  document.getElementById('estado').textContent = 'Cargando datos...';
-  detenerTodosLosAudios();
-
-  fetchCSV(urls[semestre])
-    .then(filas => {
-      datos = filas.filter(fila => fila['Autor'] && fila['Obra'] && fila['URL_audio']);
-      if (modo === 'listado') {
-        mostrarListado(datos);
-      } else {
-        iniciarEntrenamiento(datos);
-      }
-    })
-    .catch(() => {
-      document.getElementById('estado').textContent = 'Error al cargar los datos.';
+  botonesSemestre.forEach(btn => {
+    btn.addEventListener('click', () => {
+      botonesSemestre.forEach(b => b.classList.remove('activo'));
+      btn.classList.add('activo');
+      semestre = btn.dataset.semestre;
     });
+  });
+
+  document.getElementById('cargar').addEventListener('click', () => {
+    document.getElementById('estado').textContent = 'Cargando datos...';
+    detenerTodosLosAudios();
+    fetchCSV(urls[semestre])
+      .then(filas => {
+        datos = filas.filter(f => f['Autor'] && f['Obra'] && f['URL_audio']);
+        if (modo === 'listado') {
+          mostrarListado(datos);
+        } else {
+          iniciarEntrenamiento(datos);
+        }
+      })
+      .catch(() => {
+        document.getElementById('estado').textContent = 'Error al cargar los datos.';
+      });
+  });
+
+  document.getElementById('verificar').addEventListener('click', () => {
+    const seleccion = document.getElementById('selector-respuesta').value;
+    const resultado = document.getElementById('resultado');
+    if (seleccion === \`\${actual.Autor}: \${actual.Obra}\`) {
+      resultado.textContent = '✅ Correcto';
+      resultado.style.color = 'green';
+    } else {
+      resultado.textContent = \`❌ Incorrecto. Era: \${actual.Autor}: \${actual.Obra}\`;
+      resultado.style.color = 'red';
+    }
+  });
+
+  document.getElementById('siguiente').addEventListener('click', () => {
+    document.getElementById('resultado').textContent = '';
+    reproducirNuevaAudicion(datos);
+  });
 });
 
 function fetchCSV(url) {
@@ -83,15 +86,14 @@ function mostrarListado(lista) {
   contenedor.innerHTML = '';
   lista.forEach(item => {
     const bloque = document.createElement('div');
-    bloque.classList.add('tarjeta-audicion');
-    bloque.innerHTML = `
-      <h3>${item.Autor}: ${item.Obra}</h3>
-      <audio controls src="${item.URL_audio}"></audio>
-      <div class="botones-enlaces">
-        <button class="boton-enlace boton-u" data-tooltip="${item.U_titulo}" onclick="window.open('${item.U_url}', '_blank')">U</button>
-        <button class="boton-enlace boton-e" data-tooltip="${item.E_titulo}" onclick="window.open('${item.E_url}', '_blank')">E</button>
+    bloque.innerHTML = \`
+      <h3>\${item.Autor}: \${item.Obra}</h3>
+      <audio controls src="\${item.URL_audio}"></audio>
+      <div>
+        <button class="boton-enlace boton-u" data-tooltip="\${item.U_titulo}" onclick="window.open('\${item.U_url}', '_blank')">U</button>
+        <button class="boton-enlace boton-e" data-tooltip="\${item.E_titulo}" onclick="window.open('\${item.E_url}', '_blank')">E</button>
       </div>
-    `;
+    \`;
     contenedor.appendChild(bloque);
   });
 }
@@ -137,40 +139,33 @@ function reproducirNuevaAudicion(lista) {
     };
   });
 
-  // Controles
-  const playPauseBtn = document.getElementById('play-pause');
-  playPauseBtn.textContent = '⏸️';
-  playPauseBtn.onclick = () => {
+  document.getElementById('play-pause').onclick = () => {
+    if (!audio) return;
     if (audio.paused) {
       audio.play();
-      playPauseBtn.textContent = '⏸️';
+      document.getElementById('play-pause').textContent = '⏸️';
       indicador.textContent = '● ● ● Reproduciendo...';
     } else {
       audio.pause();
-      playPauseBtn.textContent = '▶️';
+      document.getElementById('play-pause').textContent = '▶️';
       indicador.textContent = '⏸️ Pausado';
     }
   };
 
   document.getElementById('retroceder').onclick = () => {
-    if (audio) {
-      audio.currentTime = Math.max(inicio, audio.currentTime - 5);
-    }
+    if (audio) audio.currentTime = Math.max(inicio, audio.currentTime - 5);
   };
 
   document.getElementById('avanzar').onclick = () => {
-    if (audio) {
-      audio.currentTime = Math.min(fin, audio.currentTime + 5);
-    }
+    if (audio) audio.currentTime = Math.min(fin, audio.currentTime + 5);
   };
 
-  // Desplegable con opciones
   const selector = document.getElementById('selector-respuesta');
   selector.innerHTML = '';
   lista.forEach(item => {
     const opcion = document.createElement('option');
-    opcion.value = `${item.Autor}: ${item.Obra}`;
-    opcion.textContent = `${item.Autor}: ${item.Obra}`;
+    opcion.value = \`\${item.Autor}: \${item.Obra}\`;
+    opcion.textContent = \`\${item.Autor}: \${item.Obra}\`;
     selector.appendChild(opcion);
   });
 }
@@ -186,31 +181,3 @@ function detenerTodosLosAudios() {
     audio = null;
   }
 }
-
-document.getElementById('verificar').addEventListener('click', () => {
-  const seleccion = document.getElementById('selector-respuesta').value;
-  const resultado = document.getElementById('resultado');
-  if (seleccion === `${actual.Autor}: ${actual.Obra}`) {
-    resultado.textContent = '✅ Correcto';
-    resultado.style.color = 'green';
-  } else {
-    resultado.textContent = `❌ Incorrecto. Era: ${actual.Autor}: ${actual.Obra}`;
-    resultado.style.color = 'red';
-  }
-});
-
-document.getElementById('siguiente').addEventListener('click', () => {
-  document.getElementById('resultado').textContent = '';
-  reproducirNuevaAudicion(datos);
-});
-
-// Silenciar audios visibles si se activa otro
-document.addEventListener('play', function (e) {
-  const audios = document.querySelectorAll('audio');
-  audios.forEach(audio => {
-    if (audio !== e.target) {
-      audio.pause();
-      audio.currentTime = 0;
-    }
-  });
-}, true);
