@@ -4,13 +4,18 @@ const urls = {
 };
 
 let datos = [];
+let actual = null;
+let audio = null;
+let inicio = 0;
+let fin = 0;
 
 document.getElementById('cargar').addEventListener('click', () => {
   const semestre = document.getElementById('semestre').value;
   const modo = document.getElementById('modo').value;
 
   document.getElementById('estado').textContent = 'Cargando datos...';
-  detenerTodosLosAudios(); // <- aquí
+  detenerTodosLosAudios();
+
   fetchCSV(urls[semestre])
     .then(filas => {
       datos = filas.filter(fila => fila['Autor'] && fila['Obra'] && fila['URL_audio']);
@@ -37,7 +42,11 @@ function fetchCSV(url) {
 }
 
 function mostrarListado(lista) {
+  detenerTodosLosAudios();
   document.getElementById('vista-entrenamiento').classList.add('oculto');
+  document.getElementById('vista-listado').classList.remove('oculto');
+  document.getElementById('estado').textContent = '';
+
   const contenedor = document.getElementById('vista-listado');
   contenedor.innerHTML = '';
   lista.forEach(item => {
@@ -50,23 +59,15 @@ function mostrarListado(lista) {
     `;
     contenedor.appendChild(bloque);
   });
-  document.getElementById('vista-listado').classList.remove('oculto');
-  document.getElementById('estado').textContent = '';
 }
 
 function iniciarEntrenamiento(lista) {
+  detenerTodosLosAudios();
   document.getElementById('vista-listado').classList.add('oculto');
   document.getElementById('vista-entrenamiento').classList.remove('oculto');
   document.getElementById('resultado').textContent = '';
   reproducirNuevaAudicion(lista);
 }
-
-let actual = null;
-
-let audio;
-let inicio = 0;
-let fin = 0;
-let actual = null;
 
 function reproducirNuevaAudicion(lista) {
   actual = lista[Math.floor(Math.random() * lista.length)];
@@ -76,7 +77,7 @@ function reproducirNuevaAudicion(lista) {
 
   if (audio) {
     audio.pause();
-    audio.remove();
+    audio = null;
   }
 
   audio = new Audio(actual.URL_audio);
@@ -118,11 +119,15 @@ function reproducirNuevaAudicion(lista) {
   };
 
   document.getElementById('retroceder').onclick = () => {
-    audio.currentTime = Math.max(inicio, audio.currentTime - 5);
+    if (audio) {
+      audio.currentTime = Math.max(inicio, audio.currentTime - 5);
+    }
   };
 
   document.getElementById('avanzar').onclick = () => {
-    audio.currentTime = Math.min(fin, audio.currentTime + 5);
+    if (audio) {
+      audio.currentTime = Math.min(fin, audio.currentTime + 5);
+    }
   };
 
   // Poner opciones en el desplegable
@@ -142,6 +147,10 @@ function detenerTodosLosAudios() {
     audio.pause();
     audio.currentTime = 0;
   });
+  if (audio) {
+    audio.pause();
+    audio = null;
+  }
 }
 
 document.getElementById('verificar').addEventListener('click', () => {
@@ -161,7 +170,7 @@ document.getElementById('siguiente').addEventListener('click', () => {
   reproducirNuevaAudicion(datos);
 });
 
-// Al reproducir un audio, parar los demás
+// Al reproducir un audio visible, parar los demás
 document.addEventListener('play', function (e) {
   const audios = document.querySelectorAll('audio');
   audios.forEach(audio => {
