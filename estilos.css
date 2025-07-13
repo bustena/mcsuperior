@@ -88,9 +88,20 @@ header h1 {
 #interruptor-modo {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
+  background-color: #a3c86d; /* verde lima Classlife */
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
   font-weight: bold;
   font-size: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.etiqueta-modo {
+  color: #333;
+  min-width: 90px;
+  text-align: center;
 }
 
 .switch {
@@ -115,7 +126,7 @@ header h1 {
   left: 0;
   right: 0;
   bottom: 0;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 .slider:before {
@@ -126,7 +137,7 @@ header h1 {
   left: 3px;
   bottom: 3px;
   background-color: white;
-  transition: .4s;
+  transition: 0.4s;
   border-radius: 50%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -137,11 +148,6 @@ input:checked + .slider {
 
 input:checked + .slider:before {
   transform: translateX(30px);
-}
-
-#modo-label {
-  font-size: 1rem;
-  color: #5c3e36;
 }
 
 /* Botones U / E unificados */
