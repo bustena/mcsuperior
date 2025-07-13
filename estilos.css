@@ -176,6 +176,14 @@ input:checked + .slider:before {
 }
 
 /* === Botones U y E === */
+.boton-u {
+  background-color: #81c784; /* verde Classlife */
+}
+
+.boton-e {
+  background-color: #ffb74d; /* naranja Classlife */
+}
+
 .boton-enlace {
   display: inline-block;
   margin-left: 0.3rem;
@@ -233,6 +241,49 @@ input:checked + .slider:before {
   width: 24px;
   height: 24px;
   stroke: currentColor; /* asegura que el icono sea blanco */
+}
+
+#vista-entrenamiento {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+#indicador {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #5c3e36;
+}
+
+#selector-respuesta {
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  min-width: 280px;
+}
+
+#verificar, #siguiente {
+  padding: 0.6rem 1.4rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  background-color: #10bbce;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#verificar:hover, #siguiente:hover {
+  background-color: #0a9bab;
+}
+
+#resultado {
+  font-weight: bold;
+  font-size: 1.1rem;
 }
 
 /* === Ocultación de vistas === */
