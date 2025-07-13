@@ -60,8 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   lucide.createIcons();
- /* document.getElementById('vista-entrenamiento').classList.add('oculto');
-  document.getElementById('vista-listado').classList.add('oculto');*/
+  document.getElementById('vista-entrenamiento').classList.add('oculto');
+  document.getElementById('vista-listado').classList.add('oculto');
 });
 
 function fetchCSV(url) {
