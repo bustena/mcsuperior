@@ -6,6 +6,19 @@ body {
   margin: 1.5rem;
 }
 
+header h1 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  padding: 1rem 2rem;
+  background: #fff;
+  border: 3px solid #8e44ad;
+  border-radius: 12px;
+  color: #8e44ad;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+}
+
 #estado {
   font-size: 1.4rem;
   font-weight: 600;
@@ -53,13 +66,21 @@ body {
 }
 
 .boton-semestre.activo[data-semestre="SUP1"] {
-  background-color: #8e44ad; /* morado */
+  background-color: #8e44ad;
   color: white;
 }
 
 .boton-semestre.activo[data-semestre="SUP2"] {
-  background-color: #e74c3c; /* rojo intenso estilo Classlife */
+  background-color: #f39c12; /* mismo naranja que "Comenzar" */
   color: white;
+}
+
+.boton-u {
+  background-color: #3498db; /* azul */
+}
+
+.boton-e {
+  background-color: #e67e22; /* naranja */
 }
 
 /* Interruptor tipo toggle */
