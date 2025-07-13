@@ -121,8 +121,10 @@ function reproducirNuevaAudicion(lista) {
   indicador.textContent = '● ● ● Cargando...';
 
   const playIcon = document.querySelector('#play-pause i');
-  playIcon.setAttribute('data-lucide', 'pause');
-  lucide.createIcons();
+  if (playIcon) {
+    playIcon.setAttribute('data-lucide', 'pause');
+    lucide.createIcons();
+  }
 
   if (audio) {
     audio.pause();
