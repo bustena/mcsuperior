@@ -169,16 +169,16 @@ function reproducirNuevaAudicion(lista) {
   document.getElementById('play-pause').onclick = () => {
     if (!audio) return;
     const icono = document.querySelector('#play-pause i');
+    
     if (audio.paused) {
       audio.play();
-      icono.setAttribute('data-lucide', 'pause');
+      icono.replaceWith(lucide.createElement("pause"));
       indicador.textContent = '● ● ● Reproduciendo...';
     } else {
       audio.pause();
-      icono.setAttribute('data-lucide', 'play');
+      icono.replaceWith(lucide.createElement("play"));
       indicador.textContent = '⏸️ Pausado';
     }
-    lucide.createIcons();
   };
 
   document.getElementById('retroceder').onclick = () => {
