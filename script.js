@@ -51,11 +51,11 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('verificar').addEventListener('click', () => {
     const seleccion = document.getElementById('selector-respuesta').value;
     const resultado = document.getElementById('resultado');
-    if (seleccion === \`\${actual.Autor}: \${actual.Obra}\`) {
+    if (seleccion === `${actual.Autor}: ${actual.Obra}`) {
       resultado.textContent = '✅ Correcto';
       resultado.style.color = 'green';
     } else {
-      resultado.textContent = \`❌ Incorrecto. Era: \${actual.Autor}: \${actual.Obra}\`;
+      resultado.textContent = `❌ Incorrecto. Era: ${actual.Autor}: ${actual.Obra}`;
       resultado.style.color = 'red';
     }
   });
@@ -87,14 +87,14 @@ function mostrarListado(lista) {
   contenedor.innerHTML = '';
   lista.forEach(item => {
     const bloque = document.createElement('div');
-    bloque.innerHTML = \`
-      <h3>\${item.Autor}: \${item.Obra}</h3>
-      <audio controls src="\${item.URL_audio}"></audio>
+    bloque.innerHTML = `
+      <h3>${item.Autor}: ${item.Obra}</h3>
+      <audio controls src="${item.URL_audio}"></audio>
       <div>
-        <button class="boton-enlace boton-u" data-tooltip="\${item.U_titulo}" onclick="window.open('\${item.U_url}', '_blank')">U</button>
-        <button class="boton-enlace boton-e" data-tooltip="\${item.E_titulo}" onclick="window.open('\${item.E_url}', '_blank')">E</button>
+        <button class="boton-enlace boton-u" data-tooltip="${item.U_titulo}" onclick="window.open('${item.U_url}', '_blank')">U</button>
+        <button class="boton-enlace boton-e" data-tooltip="${item.E_titulo}" onclick="window.open('${item.E_url}', '_blank')">E</button>
       </div>
-    \`;
+    `;
     contenedor.appendChild(bloque);
   });
 }
@@ -165,8 +165,8 @@ function reproducirNuevaAudicion(lista) {
   selector.innerHTML = '';
   lista.forEach(item => {
     const opcion = document.createElement('option');
-    opcion.value = \`\${item.Autor}: \${item.Obra}\`;
-    opcion.textContent = \`\${item.Autor}: \${item.Obra}\`;
+    opcion.value = `${item.Autor}: ${item.Obra}`;
+    opcion.textContent = `${item.Autor}: ${item.Obra}`;
     selector.appendChild(opcion);
   });
 }
