@@ -230,6 +230,22 @@ input:checked + .slider:before {
   margin-right: 0.5rem;
 }
 
+#controles button {
+  font-size: 1.5rem;
+  background-color: #765348;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  margin: 0 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#controles button:hover {
+  background-color: #5c3e36;
+}
+
 /* Ocultación de vistas */
 .oculto {
   display: none;
