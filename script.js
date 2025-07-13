@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   modoToggle.addEventListener('change', () => {
     modo = modoToggle.checked ? 'entrenamiento' : 'listado';
-    modoLabel.textContent = modoToggle.checked ? 'Entrenamiento' : 'Listado';
   });
 
   botonesSemestre.forEach(btn => {
