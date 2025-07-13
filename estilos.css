@@ -124,7 +124,7 @@ input:checked + .slider:before {
   display: flex;
   flex-direction: column;
   width: 600px;
-  background-color: #f5eee6;
+  background-color: #10bbce;
   border: 1px solid #d9cfc2;
   border-radius: 12px;
   padding: 1rem 1.2rem;
@@ -133,7 +133,7 @@ input:checked + .slider:before {
 
 .audicion-titulo {
   font-weight: 600;
-  color: #5c3e36;
+  color: white;
   margin-bottom: 0.5rem;
 }
 
