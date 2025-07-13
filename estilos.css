@@ -1,30 +1,113 @@
+/* Estilo general inspirado en Classlife */
 body {
-  font-family: sans-serif;
-  margin: 1em;
-  background: #f5f5f5;
+  font-family: "Segoe UI", sans-serif;
+  background: #f2f2f2;
   color: #333;
+  margin: 1.5em;
 }
 
-.oculto {
-  display: none;
+#selector-vista {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+  margin-bottom: 2em;
 }
 
-audio {
-  width: 100%;
-  margin: 0.5em 0;
+/* Botones semestre */
+.boton-semestre {
+  padding: 0.8em 1.2em;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  background-color: #ddd;
+  cursor: pointer;
+  margin: 0 0.5em;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1em;
+.boton-semestre.activo {
+  background-color: #8e44ad; /* morado Classlife */
+  color: white;
 }
 
-td, th {
-  padding: 0.5em;
-  border-bottom: 1px solid #ccc;
+/* Interruptor tipo toggle */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
 }
 
-button {
-  margin-top: 1em;
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  background-color: #ccc;
+  border-radius: 26px;
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: .4s;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2ecc71;
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+/* Botones U / E */
+.boton-enlace {
+  display: inline-block;
+  margin: 0.5em 0.25em;
+  padding: 0.4em 0.8em;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  position: relative;
+}
+
+.boton-u {
+  background-color: #3498db;
+}
+
+.boton-e {
+  background-color: #e67e22;
+}
+
+.boton-enlace:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  font-size: 0.8em;
+  z-index: 10;
 }
