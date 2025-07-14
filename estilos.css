@@ -302,6 +302,58 @@ input:checked + .slider:before {
   font-size: 1.1rem;
 }
 
+/* === Botones de reproducción continua === */
+#controles-listado {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.boton-control {
+  background-color: #eee;
+  border: none;
+  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.2s;
+  position: relative;
+}
+
+.boton-control:hover {
+  background-color: #ddd;
+}
+
+.boton-control.activo {
+  background-color: #8e44ad; /* púrpura Classlife */
+  color: white;
+  box-shadow: 0 0 0 3px rgba(142, 68, 173, 0.3);
+}
+
+/* Iconos Lucide dentro de botones */
+.boton-control i {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+}
+
+/* === Tooltips === */
+.boton-control:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  font-size: 0.8rem;
+  z-index: 10;
+  opacity: 0.95;
+}
+
 /* === Ocultación de vistas === */
 .oculto {
   display: none !important;
