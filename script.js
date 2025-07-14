@@ -10,6 +10,7 @@ let inicio = 0;
 let fin = 0;
 let semestre = 'SUP1';
 let modo = 'listado';
+let audioListado = null;
 
 document.addEventListener('DOMContentLoaded', () => {
   const modoToggle = document.getElementById('modo-toggle');
