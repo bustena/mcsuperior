@@ -94,6 +94,7 @@ function mostrarListado(lista) {
   detenerTodosLosAudios();
   document.getElementById('vista-entrenamiento').classList.add('oculto');
   document.getElementById('vista-listado').classList.remove('oculto');
+  document.getElementById('controles-listado').classList.remove('oculto');
   document.getElementById('estado').textContent = '';
 
   const contenedor = document.getElementById('vista-listado');
@@ -119,6 +120,7 @@ function iniciarEntrenamiento(lista) {
   detenerTodosLosAudios();
   document.getElementById('vista-listado').classList.add('oculto');
   document.getElementById('vista-entrenamiento').classList.remove('oculto');
+  document.getElementById('controles-listado').classList.add('oculto');
   document.getElementById('estado').textContent = '';
   document.getElementById('resultado').textContent = '';
   document.getElementById('selector-respuesta').innerHTML = '<option value="" disabled selected>Selecciona una obra</option>';
