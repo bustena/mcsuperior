@@ -12,7 +12,8 @@ let semestre = 'SUP1';
 let modo = 'listado';
 let audioListado = null;
 let modoReproduccion = null;         // 'orden', 'aleatorio' o null
-let ordenAleatorio = [];            // Array con los índices aleatorizados
+let ordenAleatorio = [];
+let indiceActual = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
   const modoToggle = document.getElementById('modo-toggle');
@@ -30,54 +31,46 @@ document.addEventListener('DOMContentLoaded', () => {
     activarModoReproduccion('aleatorio');
   });
 
-botonesSemestre.forEach(btn => {
-  btn.addEventListener('click', () => {
-    // Actualizar visualmente el botón activo
-    botonesSemestre.forEach(b => b.classList.remove('activo'));
-    btn.classList.add('activo');
-    semestre = btn.dataset.semestre;
+  botonesSemestre.forEach(btn => {
+    btn.addEventListener('click', () => {
+      botonesSemestre.forEach(b => b.classList.remove('activo'));
+      btn.classList.add('activo');
+      semestre = btn.dataset.semestre;
 
-    // Mostrar mensaje de carga y detener cualquier audio
-    document.getElementById('estado').textContent = 'Cargando datos...';
-    detenerTodosLosAudios();
+      document.getElementById('estado').textContent = 'Cargando datos...';
+      detenerTodosLosAudios();
 
-    // Ocultar ambas vistas antes de cargar
-    document.getElementById('vista-entrenamiento').classList.add('oculto');
-    document.getElementById('vista-listado').classList.add('oculto');
+      document.getElementById('vista-entrenamiento').classList.add('oculto');
+      document.getElementById('vista-listado').classList.add('oculto');
 
-    // Restablecer reproducción continua (si estaba activa)
-    modoReproduccion = null;
-    if (audioListado) {
-      audioListado.pause();
-      audioListado = null;
-    }
+      modoReproduccion = null;
+      indiceActual = 0;
+      ordenAleatorio = [];
 
-    // Restablecer estilo visual de botones de reproducción
-    document.getElementById('reproducir-orden').classList.remove('activo');
-    document.getElementById('reproducir-aleatorio').classList.remove('activo');
+      document.getElementById('reproducir-orden').classList.remove('activo');
+      document.getElementById('reproducir-aleatorio').classList.remove('activo');
 
-    // Obtener los datos
-    fetchCSV(urls[semestre])
-      .then(filas => {
-        datos = filas.filter(f => f['Autor'] && f['Obra'] && f['URL_audio']);
+      fetchCSV(urls[semestre])
+        .then(filas => {
+          datos = filas.filter(f => f['Autor'] && f['Obra'] && f['URL_audio']);
 
-        if (datos.length === 0) {
-          document.getElementById('estado').textContent = 'No se encontraron datos válidos.';
-          return;
-        }
+          if (datos.length === 0) {
+            document.getElementById('estado').textContent = 'No se encontraron datos válidos.';
+            return;
+          }
 
-        if (modo === 'listado') {
-          (datos);
-        } else {
-          iniciarEntrenamiento(datos);
-        }
-      })
-      .catch(error => {
-        console.error('Error al cargar los datos:', error);
-        document.getElementById('estado').textContent = 'Error al cargar los datos.';
-      });
+          if (modo === 'listado') {
+            mostrarListado(datos);
+          } else {
+            iniciarEntrenamiento(datos);
+          }
+        })
+        .catch(error => {
+          console.error('Error al cargar los datos:', error);
+          document.getElementById('estado').textContent = 'Error al cargar los datos.';
+        });
+    });
   });
-});
 
   document.getElementById('verificar').addEventListener('click', () => {
     const seleccion = document.getElementById('selector-respuesta').value;
@@ -217,7 +210,7 @@ function reproducirNuevaAudicion(lista) {
     audio.ontimeupdate = () => {
       if (audio.currentTime >= fin) {
         audio.pause();
-        audio.currentTime = inicio; // rebobina al inicio del fragmento
+        audio.currentTime = inicio;
         indicador.textContent = '■ Fin del fragmento';
         const boton = document.getElementById('play-pause');
         boton.innerHTML = '<i data-lucide="play"></i>';
@@ -226,23 +219,23 @@ function reproducirNuevaAudicion(lista) {
     };
   });
 
-document.getElementById('play-pause').onclick = () => {
-  if (!audio) return;
+  document.getElementById('play-pause').onclick = () => {
+    if (!audio) return;
 
-  const boton = document.getElementById('play-pause');
-  const indicador = document.getElementById('indicador');
+    const boton = document.getElementById('play-pause');
+    const indicador = document.getElementById('indicador');
 
-  if (audio.paused) {
-    audio.play();
-    boton.innerHTML = '<i data-lucide="pause"></i>';
-    indicador.textContent = '● ● ● Reproduciendo...';
-  } else {
-    audio.pause();
-    boton.innerHTML = '<i data-lucide="play"></i>';
-  }
+    if (audio.paused) {
+      audio.play();
+      boton.innerHTML = '<i data-lucide="pause"></i>';
+      indicador.textContent = '● ● ● Reproduciendo...';
+    } else {
+      audio.pause();
+      boton.innerHTML = '<i data-lucide="play"></i>';
+    }
 
-  lucide.createIcons();
-};
+    lucide.createIcons();
+  };
 
   document.getElementById('retroceder').onclick = () => {
     if (audio) audio.currentTime = Math.max(inicio, audio.currentTime - 5);
@@ -270,107 +263,12 @@ function activarModoReproduccion(tipo) {
 
   if (tipo === 'orden') {
     document.getElementById('reproducir-orden').classList.add('activo');
-    ordenAleatorio = [];
+    indiceActual = 0;
   } else if (tipo === 'aleatorio') {
     document.getElementById('reproducir-aleatorio').classList.add('activo');
     ordenAleatorio = [...datos.keys()].sort(() => Math.random() - 0.5);
+    indiceActual = 0;
   }
-}
-
-let modoReproduccion = null;  // 'orden' | 'aleatorio' | null
-let indiceActual = 0;
-let ordenAleatorio = [];
-
-function mostrarListado(lista) {
-  detenerTodosLosAudios();
-  document.getElementById('vista-entrenamiento').classList.add('oculto');
-  document.getElementById('vista-listado').classList.remove('oculto');
-  document.getElementById('controles-listado').classList.remove('oculto');
-  document.getElementById('estado').textContent = '';
-
-  const contenedor = document.getElementById('vista-listado');
-  contenedor.innerHTML = '';
-  
-  lista.forEach((item, index) => {
-    const bloque = document.createElement('div');
-    bloque.className = 'audicion-caja';
-    bloque.innerHTML = `
-      <div class="audicion-titulo">${item.Autor}: ${item.Obra}</div>
-      <div class="audicion-audio">
-        <audio controls src="${item.URL_audio}"></audio>
-        <div>
-          <button class="boton-enlace boton-u" data-tooltip="${item.U_titulo}" onclick="window.open('${item.U_url}', '_blank')">U</button>
-          <button class="boton-enlace boton-e" data-tooltip="${item.E_titulo}" onclick="window.open('${item.E_url}', '_blank')">E</button>
-        </div>
-      </div>
-    `;
-    contenedor.appendChild(bloque);
-
-    const audioElemento = bloque.querySelector('audio');
-    audioElemento.onplay = () => detenerTodosLosAudios(audioElemento);
-
-    audioElemento.onended = () => {
-      if (modoReproduccion === 'orden') {
-        if (indiceActual + 1 < lista.length) {
-          indiceActual++;
-          lista[indiceActual]._auto = true;
-          mostrarListado(lista);
-        }
-      } else if (modoReproduccion === 'aleatorio') {
-        if (indiceActual + 1 < ordenAleatorio.length) {
-          indiceActual++;
-          const siguiente = ordenAleatorio[indiceActual];
-          lista[siguiente]._auto = true;
-          mostrarListado(lista);
-        }
-      }
-    };
-
-    if (item._auto) {
-      delete item._auto;
-      audioElemento.play();
-    }
-  });
-}
-
-function reproducirSiguienteOrden(lista) {
-  if (indiceActual >= lista.length) {
-    modoReproduccion = null;
-    return;
-  }
-
-  const item = lista[indiceActual];
-  if (audioListado) {
-    audioListado.pause();
-    audioListado = null;
-  }
-
-  audioListado = new Audio(item.URL_audio);
-  audioListado.play();
-  audioListado.onended = () => {
-    indiceActual++;
-    reproducirSiguienteOrden(lista);
-  };
-}
-
-function reproducirSiguienteAleatorio(lista) {
-  if (indiceActual >= ordenAleatorio.length) {
-    modoReproduccion = null;
-    return;
-  }
-
-  const item = lista[ordenAleatorio[indiceActual]];
-  if (audioListado) {
-    audioListado.pause();
-    audioListado = null;
-  }
-
-  audioListado = new Audio(item.URL_audio);
-  audioListado.play();
-  audioListado.onended = () => {
-    indiceActual++;
-    reproducirSiguienteAleatorio(lista);
-  };
 }
 
 function detenerTodosLosAudios(excepto = null) {
