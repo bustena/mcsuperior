@@ -253,15 +253,39 @@ let indiceActual = 0;
 let ordenAleatorio = [];
 
 function reproducirTodos(lista) {
-  if (modoReproduccion === 'aleatorio') {
-    // Generar orden aleatorio sin repeticiones
-    ordenAleatorio = lista.map((_, i) => i).sort(() => Math.random() - 0.5);
-    indiceActual = 0;
-    reproducirSiguienteAleatorio(lista);
-  } else if (modoReproduccion === 'orden') {
-    indiceActual = 0;
-    reproducirSiguienteOrden(lista);
+  if (!modoReproduccion || lista.length === 0) return;
+
+  let indices;
+  if (modoReproduccion === 'orden') {
+    indices = [...lista.keys()];
+  } else if (modoReproduccion === 'aleatorio') {
+    indices = [...lista.keys()].sort(() => Math.random() - 0.5);
   }
+
+  let i = 0;
+  function reproducirSiguiente() {
+    if (!modoReproduccion || i >= indices.length) {
+      audioListado = null;
+      return;
+    }
+
+    const item = lista[indices[i]];
+    const audio = new Audio(item.URL_audio);
+    audioListado = audio;
+
+    // Reproduce y pasa al siguiente al terminar
+    audio.play();
+    audio.addEventListener('ended', () => {
+      if (modoReproduccion) {
+        i++;
+        reproducirSiguiente();
+      }
+    });
+
+    // Si el usuario cambia manualmente el audio, no forzamos nada
+  }
+
+  reproducirSiguiente();
 }
 
 function reproducirSiguienteOrden(lista) {
