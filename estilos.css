@@ -176,12 +176,12 @@ input:checked + .slider:before {
 }
 
 /* === Botones U y E === */
-.boton-u {
-  background-color: #81c784; /* verde Classlife */
+.boton-enlace.boton-u {
+  background-color: #64b5f6;
 }
 
-.boton-e {
-  background-color: #ffb74d; /* naranja Classlife */
+.boton-enlace.boton-e {
+  background-color: #ba68c8;
 }
 
 .boton-enlace {
