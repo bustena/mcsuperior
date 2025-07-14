@@ -11,6 +11,8 @@ let fin = 0;
 let semestre = 'SUP1';
 let modo = 'listado';
 let audioListado = null;
+let modoReproduccion = null;         // 'orden', 'aleatorio' o null
+let ordenAleatorio = [];            // Array con los índices aleatorizados
 
 document.addEventListener('DOMContentLoaded', () => {
   const modoToggle = document.getElementById('modo-toggle');
