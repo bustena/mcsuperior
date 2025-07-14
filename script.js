@@ -3,6 +3,8 @@ const urls = {
   SUP2: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTb2p1IwuAK7jqnep9w4K5Vnmi-66ugFXv8JYTWRuDEIWDv7hGGlj7qk6SyU7ulW9DklaZ4-vIuehou/pub?gid=839714858&single=true&output=csv'
 };
 
+const DURACION_FRAGMENTO = 120;
+
 let datos = [];
 let actual = null;
 let audio = null;
@@ -204,12 +206,12 @@ function reproducirNuevaAudicion(lista) {
   audio = new Audio(actual.URL_audio);
   audio.addEventListener('loadedmetadata', () => {
     const duracion = audio.duration;
-    if (duracion <= 90) {
+    if (duracion <= DURACION_FRAGMENTO) {
       inicio = 0;
       fin = duracion;
     } else {
-      inicio = Math.random() * (duracion - 90);
-      fin = inicio + 90;
+      inicio = Math.random() * (duracion - DURACION_FRAGMENTO);
+      fin = inicio + DURACION_FRAGMENTO;
     }
 
     audio.currentTime = inicio;
