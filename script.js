@@ -243,6 +243,62 @@ function activarModoReproduccion(tipo) {
   }
 }
 
+let modoReproduccion = null;  // 'orden' | 'aleatorio' | null
+let indiceActual = 0;
+let ordenAleatorio = [];
+
+function reproducirTodos(lista) {
+  if (modoReproduccion === 'aleatorio') {
+    // Generar orden aleatorio sin repeticiones
+    ordenAleatorio = lista.map((_, i) => i).sort(() => Math.random() - 0.5);
+    indiceActual = 0;
+    reproducirSiguienteAleatorio(lista);
+  } else if (modoReproduccion === 'orden') {
+    indiceActual = 0;
+    reproducirSiguienteOrden(lista);
+  }
+}
+
+function reproducirSiguienteOrden(lista) {
+  if (indiceActual >= lista.length) {
+    modoReproduccion = null;
+    return;
+  }
+
+  const item = lista[indiceActual];
+  if (audioListado) {
+    audioListado.pause();
+    audioListado = null;
+  }
+
+  audioListado = new Audio(item.URL_audio);
+  audioListado.play();
+  audioListado.onended = () => {
+    indiceActual++;
+    reproducirSiguienteOrden(lista);
+  };
+}
+
+function reproducirSiguienteAleatorio(lista) {
+  if (indiceActual >= ordenAleatorio.length) {
+    modoReproduccion = null;
+    return;
+  }
+
+  const item = lista[ordenAleatorio[indiceActual]];
+  if (audioListado) {
+    audioListado.pause();
+    audioListado = null;
+  }
+
+  audioListado = new Audio(item.URL_audio);
+  audioListado.play();
+  audioListado.onended = () => {
+    indiceActual++;
+    reproducirSiguienteAleatorio(lista);
+  };
+}
+
 function detenerTodosLosAudios(excepto = null) {
   const audios = document.querySelectorAll('audio');
   audios.forEach(a => {
