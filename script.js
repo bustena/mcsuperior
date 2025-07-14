@@ -159,6 +159,7 @@ function reproducirNuevaAudicion(lista) {
     audio.ontimeupdate = () => {
       if (audio.currentTime >= fin) {
         audio.pause();
+        audio.currentTime = inicio; // rebobina al inicio del fragmento
         indicador.textContent = '■ Fin del fragmento';
         const boton = document.getElementById('play-pause');
         boton.innerHTML = '<i data-lucide="play"></i>';
