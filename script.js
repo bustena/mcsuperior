@@ -126,14 +126,39 @@ function mostrarListado(lista) {
     bloque.innerHTML = `
       <div class="audicion-titulo">${item.Autor}: ${item.Obra}</div>
       <div class="audicion-audio">
-        <audio controls src="${item.URL_audio}" onplay="detenerTodosLosAudios(this)"></audio>
+        <audio controls src="${item.URL_audio}"></audio>
         <div>
           <button class="boton-enlace boton-u" data-tooltip="${item.U_titulo}" onclick="window.open('${item.U_url}', '_blank')">U</button>
           <button class="boton-enlace boton-e" data-tooltip="${item.E_titulo}" onclick="window.open('${item.E_url}', '_blank')">E</button>
         </div>
       </div>
     `;
-    contenedor.appendChild(bloque);
+        contenedor.appendChild(bloque);
+        const audioElemento = bloque.querySelector('audio');
+    audioElemento.onplay = () => detenerTodosLosAudios(audioElemento);
+    
+    audioElemento.onended = () => {
+      if (modoReproduccion === 'orden') {
+        if (indiceActual + 1 < lista.length) {
+          indiceActual++;
+          lista[indiceActual]._auto = true;
+          mostrarListado(lista);  // recarga y fuerza reproducción del siguiente
+        }
+      } else if (modoReproduccion === 'aleatorio') {
+        if (indiceActual + 1 < ordenAleatorio.length) {
+          indiceActual++;
+          const siguiente = ordenAleatorio[indiceActual];
+          lista[siguiente]._auto = true;
+          mostrarListado(lista);
+        }
+      }
+    };
+    
+    // Reproduce automáticamente si así se indica
+    if (item._auto) {
+      delete item._auto;
+      audioElemento.play();
+    }
   });
 
   // Llamar a reproducción continua si está activada
@@ -235,29 +260,24 @@ document.getElementById('play-pause').onclick = () => {
 function activarModoReproduccion(tipo) {
   const btnOrden = document.getElementById('reproducir-orden');
   const btnAleatorio = document.getElementById('reproducir-aleatorio');
-  const botones = [btnOrden, btnAleatorio];
 
-  // Desactivar visualmente ambos
-  botones.forEach(btn => btn.classList.remove('activo'));
+  // Resetear botones visualmente
+  btnOrden.classList.remove('activo');
+  btnAleatorio.classList.remove('activo');
 
-  // Si ya estaba activado, lo desactiva
   if (modoReproduccion === tipo) {
+    // Si ya estaba activado, lo desactivamos
     modoReproduccion = null;
-    if (audioListado) {
-      audioListado.pause();
-      audioListado = null;
+  } else {
+    modoReproduccion = tipo;
+    if (tipo === 'orden') {
+      btnOrden.classList.add('activo');
+      indiceActual = 0; // reiniciamos índice por si acaso
+    } else {
+      btnAleatorio.classList.add('activo');
+      ordenAleatorio = shuffleArray(datos.map((_, i) => i));
+      indiceActual = 0;
     }
-    return;
-  }
-
-  // Activar el nuevo modo
-  modoReproduccion = tipo;
-  if (tipo === 'orden') {
-    btnOrden.classList.add('activo');
-    reproducirTodos(datos);
-  } else if (tipo === 'aleatorio') {
-    btnAleatorio.classList.add('activo');
-    reproducirTodos(shuffleArray(datos));
   }
 }
 
