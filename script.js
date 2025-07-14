@@ -65,7 +65,7 @@ botonesSemestre.forEach(btn => {
         }
 
         if (modo === 'listado') {
-          mostrarListado(datos);
+          (datos);
         } else {
           iniciarEntrenamiento(datos);
         }
@@ -119,8 +119,8 @@ function mostrarListado(lista) {
 
   const contenedor = document.getElementById('vista-listado');
   contenedor.innerHTML = '';
-  
-  lista.forEach(item => {
+
+  lista.forEach((item, index) => {
     const bloque = document.createElement('div');
     bloque.className = 'audicion-caja';
     bloque.innerHTML = `
@@ -133,47 +133,41 @@ function mostrarListado(lista) {
         </div>
       </div>
     `;
-        contenedor.appendChild(bloque);
-        const audioElemento = bloque.querySelector('audio');
-    audioElemento.onplay = () => {
-      detenerTodosLosAudios(audioElemento);
-    
-      if (modoReproduccion === 'orden') {
-        indiceActual = index;
-      } else if (modoReproduccion === 'aleatorio') {
-        const pos = ordenAleatorio.indexOf(index);
-        if (pos !== -1) indiceActual = pos;
-      }
-    };
-    
+    contenedor.appendChild(bloque);
+
+    const audioElemento = bloque.querySelector('audio');
+
+    audioElemento.onplay = () => detenerTodosLosAudios(audioElemento);
+
     audioElemento.onended = () => {
+      if (!modoReproduccion) return;
+
+      let siguienteIndex = null;
+
       if (modoReproduccion === 'orden') {
-        if (indiceActual + 1 < lista.length) {
-          indiceActual++;
-          lista[indiceActual]._auto = true;
-          mostrarListado(lista);  // recarga y fuerza reproducción del siguiente
-        }
+        if (index + 1 < lista.length) siguienteIndex = index + 1;
       } else if (modoReproduccion === 'aleatorio') {
-        if (indiceActual + 1 < ordenAleatorio.length) {
-          indiceActual++;
-          const siguiente = ordenAleatorio[indiceActual];
-          lista[siguiente]._auto = true;
-          mostrarListado(lista);
+        if (ordenAleatorio.length === 0) {
+          ordenAleatorio = [...lista.keys()].sort(() => Math.random() - 0.5);
+        }
+        const actualIndexInAleatorio = ordenAleatorio.indexOf(index);
+        if (actualIndexInAleatorio !== -1 && actualIndexInAleatorio + 1 < ordenAleatorio.length) {
+          siguienteIndex = ordenAleatorio[actualIndexInAleatorio + 1];
         }
       }
+
+      if (siguienteIndex !== null) {
+        const siguienteBloque = contenedor.children[siguienteIndex];
+        const siguienteAudio = siguienteBloque.querySelector('audio');
+        if (siguienteAudio) siguienteAudio.play();
+      }
     };
-    
-    // Reproduce automáticamente si así se indica
+
     if (item._auto) {
       delete item._auto;
       audioElemento.play();
     }
   });
-
-  // Llamar a reproducción continua si está activada
-  if (modoReproduccion) {
-    reproducirTodos(lista);
-  }
 }
 
 function iniciarEntrenamiento(lista) {
