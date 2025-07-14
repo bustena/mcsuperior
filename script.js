@@ -237,12 +237,25 @@ function activarModoReproduccion(tipo) {
   const btnAleatorio = document.getElementById('reproducir-aleatorio');
   const botones = [btnOrden, btnAleatorio];
 
+  // Desactivar visualmente ambos
   botones.forEach(btn => btn.classList.remove('activo'));
 
+  // Si ya estaba activado, lo desactiva
+  if (modoReproduccion === tipo) {
+    modoReproduccion = null;
+    if (audioListado) {
+      audioListado.pause();
+      audioListado = null;
+    }
+    return;
+  }
+
+  // Activar el nuevo modo
+  modoReproduccion = tipo;
   if (tipo === 'orden') {
     btnOrden.classList.add('activo');
     reproducirTodos(datos);
-  } else {
+  } else if (tipo === 'aleatorio') {
     btnAleatorio.classList.add('activo');
     reproducirTodos(shuffleArray(datos));
   }
