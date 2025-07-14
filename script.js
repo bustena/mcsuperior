@@ -166,20 +166,24 @@ function reproducirNuevaAudicion(lista) {
     };
   });
 
-  document.getElementById('play-pause').onclick = () => {
-    if (!audio) return;
-    const icono = document.querySelector('#play-pause i');
-    
-    if (audio.paused) {
-      audio.play();
-      icono.replaceWith(lucide.createElement("pause"));
-      indicador.textContent = '● ● ● Reproduciendo...';
-    } else {
-      audio.pause();
-      icono.replaceWith(lucide.createElement("play"));
-      indicador.textContent = '⏸️ Pausado';
-    }
-  };
+document.getElementById('play-pause').onclick = () => {
+  if (!audio) return;
+
+  const boton = document.getElementById('play-pause');
+  const indicador = document.getElementById('indicador');
+
+  if (audio.paused) {
+    audio.play();
+    boton.innerHTML = '<i data-lucide="pause"></i>';
+    indicador.textContent = '● ● ● Reproduciendo...';
+  } else {
+    audio.pause();
+    boton.innerHTML = '<i data-lucide="play"></i>';
+    indicador.textContent = '⏸️ Pausado';
+  }
+
+  lucide.createIcons();
+};
 
   document.getElementById('retroceder').onclick = () => {
     if (audio) audio.currentTime = Math.max(inicio, audio.currentTime - 5);
