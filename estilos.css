@@ -167,6 +167,12 @@ input:checked + .slider:before {
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.05);
 }
 
+.audicion-caja.reproduciendo {
+  border: 2px solid #fe7857;
+  background-color: #fff3ef;
+  box-shadow: 0 0 10px rgba(254, 120, 87, 0.4);
+}
+
 .audicion-titulo {
   font-weight: 600;
   color: white;
