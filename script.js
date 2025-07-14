@@ -119,13 +119,14 @@ function mostrarListado(lista) {
 
   const contenedor = document.getElementById('vista-listado');
   contenedor.innerHTML = '';
+  
   lista.forEach(item => {
     const bloque = document.createElement('div');
     bloque.className = 'audicion-caja';
     bloque.innerHTML = `
       <div class="audicion-titulo">${item.Autor}: ${item.Obra}</div>
       <div class="audicion-audio">
-      <audio controls src="${item.URL_audio}" onplay="detenerTodosLosAudios(this)"></audio>
+        <audio controls src="${item.URL_audio}" onplay="detenerTodosLosAudios(this)"></audio>
         <div>
           <button class="boton-enlace boton-u" data-tooltip="${item.U_titulo}" onclick="window.open('${item.U_url}', '_blank')">U</button>
           <button class="boton-enlace boton-e" data-tooltip="${item.E_titulo}" onclick="window.open('${item.E_url}', '_blank')">E</button>
@@ -133,8 +134,12 @@ function mostrarListado(lista) {
       </div>
     `;
     contenedor.appendChild(bloque);
-    document.getElementById('controles-listado').classList.remove('oculto');
   });
+
+  // Llamar a reproducción continua si está activada
+  if (modoReproduccion) {
+    reproducirTodos(lista);
+  }
 }
 
 function iniciarEntrenamiento(lista) {
