@@ -285,40 +285,56 @@ let modoReproduccion = null;  // 'orden' | 'aleatorio' | null
 let indiceActual = 0;
 let ordenAleatorio = [];
 
-function reproducirTodos(lista) {
-  if (!modoReproduccion || lista.length === 0) return;
+function mostrarListado(lista) {
+  detenerTodosLosAudios();
+  document.getElementById('vista-entrenamiento').classList.add('oculto');
+  document.getElementById('vista-listado').classList.remove('oculto');
+  document.getElementById('controles-listado').classList.remove('oculto');
+  document.getElementById('estado').textContent = '';
 
-  let indices;
-  if (modoReproduccion === 'orden') {
-    indices = [...lista.keys()];
-  } else if (modoReproduccion === 'aleatorio') {
-    indices = [...lista.keys()].sort(() => Math.random() - 0.5);
-  }
+  const contenedor = document.getElementById('vista-listado');
+  contenedor.innerHTML = '';
+  
+  lista.forEach((item, index) => {
+    const bloque = document.createElement('div');
+    bloque.className = 'audicion-caja';
+    bloque.innerHTML = `
+      <div class="audicion-titulo">${item.Autor}: ${item.Obra}</div>
+      <div class="audicion-audio">
+        <audio controls src="${item.URL_audio}"></audio>
+        <div>
+          <button class="boton-enlace boton-u" data-tooltip="${item.U_titulo}" onclick="window.open('${item.U_url}', '_blank')">U</button>
+          <button class="boton-enlace boton-e" data-tooltip="${item.E_titulo}" onclick="window.open('${item.E_url}', '_blank')">E</button>
+        </div>
+      </div>
+    `;
+    contenedor.appendChild(bloque);
 
-  let i = 0;
-  function reproducirSiguiente() {
-    if (!modoReproduccion || i >= indices.length) {
-      audioListado = null;
-      return;
-    }
+    const audioElemento = bloque.querySelector('audio');
+    audioElemento.onplay = () => detenerTodosLosAudios(audioElemento);
 
-    const item = lista[indices[i]];
-    const audio = new Audio(item.URL_audio);
-    audioListado = audio;
-
-    // Reproduce y pasa al siguiente al terminar
-    audio.play();
-    audio.addEventListener('ended', () => {
-      if (modoReproduccion) {
-        i++;
-        reproducirSiguiente();
+    audioElemento.onended = () => {
+      if (modoReproduccion === 'orden') {
+        if (indiceActual + 1 < lista.length) {
+          indiceActual++;
+          lista[indiceActual]._auto = true;
+          mostrarListado(lista);
+        }
+      } else if (modoReproduccion === 'aleatorio') {
+        if (indiceActual + 1 < ordenAleatorio.length) {
+          indiceActual++;
+          const siguiente = ordenAleatorio[indiceActual];
+          lista[siguiente]._auto = true;
+          mostrarListado(lista);
+        }
       }
-    });
+    };
 
-    // Si el usuario cambia manualmente el audio, no forzamos nada
-  }
-
-  reproducirSiguiente();
+    if (item._auto) {
+      delete item._auto;
+      audioElemento.play();
+    }
+  });
 }
 
 function reproducirSiguienteOrden(lista) {
