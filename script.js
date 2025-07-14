@@ -160,7 +160,8 @@ function reproducirNuevaAudicion(lista) {
       if (audio.currentTime >= fin) {
         audio.pause();
         indicador.textContent = '■ Fin del fragmento';
-        playIcon.setAttribute('data-lucide', 'play');
+        const boton = document.getElementById('play-pause');
+        boton.innerHTML = '<i data-lucide="play"></i>';
         lucide.createIcons();
       }
     };
