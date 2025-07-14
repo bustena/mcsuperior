@@ -179,7 +179,6 @@ document.getElementById('play-pause').onclick = () => {
   } else {
     audio.pause();
     boton.innerHTML = '<i data-lucide="play"></i>';
-    indicador.textContent = '⏸️ Pausado';
   }
 
   lucide.createIcons();
