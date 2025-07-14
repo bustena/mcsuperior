@@ -104,7 +104,7 @@ function mostrarListado(lista) {
     bloque.innerHTML = `
       <div class="audicion-titulo">${item.Autor}: ${item.Obra}</div>
       <div class="audicion-audio">
-        <audio controls src="${item.URL_audio}"></audio>
+      <audio controls src="${item.URL_audio}" onplay="detenerTodosLosAudios(this)"></audio>
         <div>
           <button class="boton-enlace boton-u" data-tooltip="${item.U_titulo}" onclick="window.open('${item.U_url}', '_blank')">U</button>
           <button class="boton-enlace boton-e" data-tooltip="${item.E_titulo}" onclick="window.open('${item.E_url}', '_blank')">E</button>
@@ -204,13 +204,15 @@ document.getElementById('play-pause').onclick = () => {
   });
 }
 
-function detenerTodosLosAudios() {
+function detenerTodosLosAudios(excepto = null) {
   const audios = document.querySelectorAll('audio');
-  audios.forEach(audio => {
-    audio.pause();
-    audio.currentTime = 0;
+  audios.forEach(a => {
+    if (a !== excepto) {
+      a.pause();
+      a.currentTime = 0;
+    }
   });
-  if (audio) {
+  if (audio && audio !== excepto) {
     audio.pause();
     audio = null;
   }
