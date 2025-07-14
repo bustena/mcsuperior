@@ -177,11 +177,11 @@ input:checked + .slider:before {
 
 /* === Botones U y E === */
 .boton-enlace.boton-u {
-  background-color: #64b5f6;
+  background-color: #d3545d;
 }
 
 .boton-enlace.boton-e {
-  background-color: #ba68c8;
+  background-color: #674e9e;
 }
 
 .boton-enlace {
