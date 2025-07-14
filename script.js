@@ -135,7 +135,16 @@ function mostrarListado(lista) {
     `;
         contenedor.appendChild(bloque);
         const audioElemento = bloque.querySelector('audio');
-    audioElemento.onplay = () => detenerTodosLosAudios(audioElemento);
+    audioElemento.onplay = () => {
+      detenerTodosLosAudios(audioElemento);
+    
+      if (modoReproduccion === 'orden') {
+        indiceActual = index;
+      } else if (modoReproduccion === 'aleatorio') {
+        const pos = ordenAleatorio.indexOf(index);
+        if (pos !== -1) indiceActual = pos;
+      }
+    };
     
     audioElemento.onended = () => {
       if (modoReproduccion === 'orden') {
