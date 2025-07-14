@@ -132,7 +132,11 @@ function mostrarListado(lista) {
 
     const audioElemento = bloque.querySelector('audio');
 
-    audioElemento.onplay = () => detenerTodosLosAudios(audioElemento);
+    audioElemento.onplay = () => {
+      detenerTodosLosAudios(audioElemento);
+      document.querySelectorAll('.audicion-caja').forEach(c => c.classList.remove('reproduciendo'));
+      bloque.classList.add('reproduciendo');
+    };
 
     audioElemento.onended = () => {
       if (!modoReproduccion) return;
@@ -151,13 +155,16 @@ function mostrarListado(lista) {
         }
       }
 
-    if (siguienteAudio) {
-      // Marcar visualmente el nuevo bloque
-      document.querySelectorAll('.audicion-caja').forEach(c => c.classList.remove('reproduciendo'));
-      siguienteBloque.classList.add('reproduciendo');
-      siguienteBloque.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      siguienteAudio.play();
-    }
+      if (siguienteIndex !== null) {
+        const siguienteBloque = contenedor.children[siguienteIndex];
+        const siguienteAudio = siguienteBloque.querySelector('audio');
+        if (siguienteAudio) {
+          document.querySelectorAll('.audicion-caja').forEach(c => c.classList.remove('reproduciendo'));
+          siguienteBloque.classList.add('reproduciendo');
+          siguienteBloque.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          siguienteAudio.play();
+        }
+      }
     };
 
     if (item._auto) {
