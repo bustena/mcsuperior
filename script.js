@@ -263,26 +263,17 @@ document.getElementById('play-pause').onclick = () => {
 }
 
 function activarModoReproduccion(tipo) {
-  const btnOrden = document.getElementById('reproducir-orden');
-  const btnAleatorio = document.getElementById('reproducir-aleatorio');
+  modoReproduccion = tipo;
 
-  // Resetear botones visualmente
-  btnOrden.classList.remove('activo');
-  btnAleatorio.classList.remove('activo');
+  document.getElementById('reproducir-orden').classList.remove('activo');
+  document.getElementById('reproducir-aleatorio').classList.remove('activo');
 
-  if (modoReproduccion === tipo) {
-    // Si ya estaba activado, lo desactivamos
-    modoReproduccion = null;
-  } else {
-    modoReproduccion = tipo;
-    if (tipo === 'orden') {
-      btnOrden.classList.add('activo');
-      indiceActual = 0; // reiniciamos índice por si acaso
-    } else {
-      btnAleatorio.classList.add('activo');
-      ordenAleatorio = shuffleArray(datos.map((_, i) => i));
-      indiceActual = 0;
-    }
+  if (tipo === 'orden') {
+    document.getElementById('reproducir-orden').classList.add('activo');
+    ordenAleatorio = [];
+  } else if (tipo === 'aleatorio') {
+    document.getElementById('reproducir-aleatorio').classList.add('activo');
+    ordenAleatorio = [...datos.keys()].sort(() => Math.random() - 0.5);
   }
 }
 
