@@ -168,8 +168,13 @@ input:checked + .slider:before {
 }
 
 .audicion-caja.reproduciendo {
-  border: 2px solid #aa5522;
-  background-color: #fcefe4;
+  background-color: #fe7857;
+  transition: background-color 0.3s ease;
+}
+
+.audicion-caja.reproduciendo .audicion-titulo {
+  color: white;
+  font-weight: bold;
 }
 
 .audicion-titulo {
