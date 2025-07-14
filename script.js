@@ -151,11 +151,13 @@ function mostrarListado(lista) {
         }
       }
 
-      if (siguienteIndex !== null) {
-        const siguienteBloque = contenedor.children[siguienteIndex];
-        const siguienteAudio = siguienteBloque.querySelector('audio');
-        if (siguienteAudio) siguienteAudio.play();
-      }
+    if (siguienteAudio) {
+      // Marcar visualmente el nuevo bloque
+      document.querySelectorAll('.audicion-caja').forEach(c => c.classList.remove('reproduciendo'));
+      siguienteBloque.classList.add('reproduciendo');
+      siguienteBloque.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      siguienteAudio.play();
+    }
     };
 
     if (item._auto) {
