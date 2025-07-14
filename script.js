@@ -19,6 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
     modo = modoToggle.checked ? 'entrenamiento' : 'listado';
   });
 
+  document.getElementById('reproducir-orden').addEventListener('click', () => {
+    activarModoReproduccion('orden');
+  });
+
+  document.getElementById('reproducir-aleatorio').addEventListener('click', () => {
+    activarModoReproduccion('aleatorio');
+  });
+
 botonesSemestre.forEach(btn => {
   btn.addEventListener('click', () => {
     // Actualizar visualmente el botón activo
@@ -33,6 +41,17 @@ botonesSemestre.forEach(btn => {
     // Ocultar ambas vistas antes de cargar
     document.getElementById('vista-entrenamiento').classList.add('oculto');
     document.getElementById('vista-listado').classList.add('oculto');
+
+    // Restablecer reproducción continua (si estaba activa)
+    modoReproduccion = null;
+    if (audioListado) {
+      audioListado.pause();
+      audioListado = null;
+    }
+
+    // Restablecer estilo visual de botones de reproducción
+    document.getElementById('reproducir-orden').classList.remove('activo');
+    document.getElementById('reproducir-aleatorio').classList.remove('activo');
 
     // Obtener los datos
     fetchCSV(urls[semestre])
@@ -113,6 +132,7 @@ function mostrarListado(lista) {
       </div>
     `;
     contenedor.appendChild(bloque);
+    document.getElementById('controles-listado').classList.remove('oculto');
   });
 }
 
@@ -204,6 +224,22 @@ document.getElementById('play-pause').onclick = () => {
     opcion.textContent = `${item.Autor}: ${item.Obra}`;
     selector.appendChild(opcion);
   });
+}
+
+function activarModoReproduccion(tipo) {
+  const btnOrden = document.getElementById('reproducir-orden');
+  const btnAleatorio = document.getElementById('reproducir-aleatorio');
+  const botones = [btnOrden, btnAleatorio];
+
+  botones.forEach(btn => btn.classList.remove('activo'));
+
+  if (tipo === 'orden') {
+    btnOrden.classList.add('activo');
+    reproducirTodos(datos);
+  } else {
+    btnAleatorio.classList.add('activo');
+    reproducirTodos(shuffleArray(datos));
+  }
 }
 
 function detenerTodosLosAudios(excepto = null) {
