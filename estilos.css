@@ -270,25 +270,27 @@ input:checked + .slider:before {
 }
 
 #vista-entrenamiento {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  margin-top: 2rem;
+  background: #fff;
+  border: 2px solid #fe7857;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
 }
 
 #indicador {
+  font-weight: bold;
   font-size: 1.2rem;
-  font-weight: 600;
-  color: #5c3e36;
+  color: #fe7857;
+  margin-bottom: 1rem;
 }
 
 #selector-respuesta {
-  padding: 0.6rem 1rem;
+  margin-top: 1rem;
+  padding: 0.5rem;
   font-size: 1rem;
   border-radius: 8px;
   border: 1px solid #ccc;
-  min-width: 280px;
+  width: 100%;
 }
 
 #verificar, #siguiente {
@@ -308,8 +310,9 @@ input:checked + .slider:before {
 }
 
 #resultado {
-  font-weight: bold;
+  margin-top: 1rem;
   font-size: 1.1rem;
+  font-weight: bold;
 }
 
 /* === Botones de reproducción continua === */
@@ -348,20 +351,20 @@ input:checked + .slider:before {
 }
 
 /* === Tooltips === */
-.boton-control:hover::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: 130%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #333;
+.boton-control {
+  background-color: #fe7857;
   color: white;
-  padding: 6px 10px;
-  border-radius: 4px;
-  white-space: nowrap;
-  font-size: 0.8rem;
-  z-index: 10;
-  opacity: 0.95;
+  border: none;
+  padding: 0.6rem 1rem;
+  margin: 0.3rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.boton-control:hover {
+  background-color: #e05f42;
 }
 
 /* === Ocultación de vistas === */
