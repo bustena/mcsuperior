@@ -54,6 +54,14 @@ header h1 {
   color: white;
 }
 
+#botones-semestre {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;       /* separación entre botones */
+  flex-wrap: nowrap; /* no permitir que se apilen */
+}
+
 /* 1º semestre: verde */
 .boton-semestre[data-semestre="SUP1"] {
   background-color: #d3e8bc; /* versión grisácea/inactiva */
