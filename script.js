@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const seleccion = document.getElementById('selector-respuesta').value;
     const resultado = document.getElementById('resultado');
     if (seleccion === `${actual.Autor}: ${actual.Obra}`) {
-      resultado.textContent = '✅ Correcto';
+      resultado.textContent = 'Correcto';
       resultado.style.color = 'green';
     } else {
       resultado.textContent = `❌ Incorrecto. Era: ${actual.Autor}: ${actual.Obra}`;
