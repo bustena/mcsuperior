@@ -190,7 +190,6 @@ function iniciarEntrenamiento(lista) {
 function reproducirNuevaAudicion(lista) {
   let nuevoIndice;
   if (lista.length > 1 && actual) {
-    // evitar repetir la misma consecutivamente
     do {
       nuevoIndice = Math.floor(Math.random() * lista.length);
     } while (lista[nuevoIndice] === actual);
@@ -201,12 +200,6 @@ function reproducirNuevaAudicion(lista) {
   actual = lista[nuevoIndice];
   const indicador = document.getElementById('indicador');
   indicador.textContent = '● ● ● Cargando ● ● ●';
-
-  const playIcon = document.querySelector('#play-pause i');
-  if (playIcon) {
-    playIcon.setAttribute('data-lucide', 'pause');
-    lucide.createIcons();
-  }
 
   if (audio) {
     audio.pause();
@@ -225,13 +218,18 @@ function reproducirNuevaAudicion(lista) {
     }
 
     audio.currentTime = inicio;
-    audio.play();
-    indicador.textContent = '● ● ● Reproduciendo ● ● ●';
+    audio.play().then(() => {
+      // Actualizar icono tras iniciar reproducción
+      const boton = document.getElementById('play-pause');
+      boton.innerHTML = '<i data-lucide="pause"></i>';
+      lucide.createIcons();
+      indicador.textContent = '● ● ● Reproduciendo ● ● ●';
+    });
 
     audio.ontimeupdate = () => {
       if (audio.currentTime >= fin) {
         audio.pause();
-        audio.currentTime = inicio; // rebobina al inicio
+        audio.currentTime = inicio; 
         indicador.textContent = '■ Fin del fragmento';
         const boton = document.getElementById('play-pause');
         boton.innerHTML = '<i data-lucide="play"></i>';
@@ -242,19 +240,20 @@ function reproducirNuevaAudicion(lista) {
 
   document.getElementById('play-pause').onclick = () => {
     if (!audio) return;
-
     const boton = document.getElementById('play-pause');
     const indicador = document.getElementById('indicador');
 
     if (audio.paused) {
-      audio.play();
-      boton.innerHTML = '<i data-lucide="pause"></i>';
-      indicador.textContent = '● ● ● Reproduciendo ● ● ●';
+      audio.play().then(() => {
+        boton.innerHTML = '<i data-lucide="pause"></i>';
+        lucide.createIcons();
+        indicador.textContent = '● ● ● Reproduciendo ● ● ●';
+      });
     } else {
       audio.pause();
       boton.innerHTML = '<i data-lucide="play"></i>';
+      lucide.createIcons();
     }
-    lucide.createIcons();
   };
 
   document.getElementById('retroceder').onclick = () => {
