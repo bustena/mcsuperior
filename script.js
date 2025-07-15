@@ -188,9 +188,19 @@ function iniciarEntrenamiento(lista) {
 }
 
 function reproducirNuevaAudicion(lista) {
-  actual = lista[Math.floor(Math.random() * lista.length)];
+  let nuevoIndice;
+  if (lista.length > 1 && actual) {
+    // evitar repetir la misma consecutivamente
+    do {
+      nuevoIndice = Math.floor(Math.random() * lista.length);
+    } while (lista[nuevoIndice] === actual);
+  } else {
+    nuevoIndice = Math.floor(Math.random() * lista.length);
+  }
+
+  actual = lista[nuevoIndice];
   const indicador = document.getElementById('indicador');
-  indicador.textContent = '● ● ● Cargando...';
+  indicador.textContent = '● ● ● Cargando ● ● ●';
 
   const playIcon = document.querySelector('#play-pause i');
   if (playIcon) {
@@ -221,7 +231,7 @@ function reproducirNuevaAudicion(lista) {
     audio.ontimeupdate = () => {
       if (audio.currentTime >= fin) {
         audio.pause();
-        audio.currentTime = inicio;
+        audio.currentTime = inicio; // rebobina al inicio
         indicador.textContent = '■ Fin del fragmento';
         const boton = document.getElementById('play-pause');
         boton.innerHTML = '<i data-lucide="play"></i>';
@@ -239,12 +249,11 @@ function reproducirNuevaAudicion(lista) {
     if (audio.paused) {
       audio.play();
       boton.innerHTML = '<i data-lucide="pause"></i>';
-      indicador.textContent = '● ● ● Reproduciendo...';
+      indicador.textContent = '● ● ● Reproduciendo ● ● ●';
     } else {
       audio.pause();
       boton.innerHTML = '<i data-lucide="play"></i>';
     }
-
     lucide.createIcons();
   };
 
