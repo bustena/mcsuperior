@@ -216,7 +216,7 @@ function reproducirNuevaAudicion(lista) {
 
     audio.currentTime = inicio;
     audio.play();
-    indicador.textContent = '● ● ● Reproduciendo...';
+    indicador.textContent = '● ● ● Reproduciendo ● ● ●';
 
     audio.ontimeupdate = () => {
       if (audio.currentTime >= fin) {
