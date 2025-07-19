@@ -202,6 +202,24 @@ input:checked + .slider:before {
   margin-right: 0.5rem;
 }
 
+/* === Bloque Info === */
+
+.audicion-info {
+  display: none;
+  margin-top: 0.6em;
+  font-size: 0.9em;
+  color: #222;
+  background: #f0f0f0;
+  padding: 0.8em;
+  border-radius: 6px;
+  text-align: left;
+  line-height: 1.4em;
+}
+
+.audicion-caja.reproduciendo .audicion-info {
+  display: block;
+}
+
 /* === Botones U y E === */
 .boton-enlace.boton-u {
   background-color: #d3545d;
