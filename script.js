@@ -287,6 +287,22 @@ function activarModoReproduccion(tipo) {
     document.getElementById('reproducir-aleatorio').classList.add('activo');
     ordenAleatorio = [...datos.keys()].sort(() => Math.random() - 0.5);
     indiceActual = 0;
+
+    // 🔹 Si no hay nada reproduciéndose, iniciar reproducción aleatoria:
+    const algoReproduciendo = Array.from(document.querySelectorAll('audio'))
+      .some(a => !a.paused);
+    if (!algoReproduciendo && audio === null) {
+      // elige un índice aleatorio inicial
+      const randomIndex = Math.floor(Math.random() * datos.length);
+      const bloque = document.getElementById('vista-listado').children[randomIndex];
+      const audioInicial = bloque.querySelector('audio');
+      if (audioInicial) {
+        document.querySelectorAll('.audicion-caja').forEach(c => c.classList.remove('reproduciendo'));
+        bloque.classList.add('reproduciendo');
+        bloque.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        audioInicial.play(); // 🔹 Esto activará por defecto el icono pause
+      }
+    }
   }
 }
 
