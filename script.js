@@ -129,6 +129,7 @@ function mostrarListado(lista) {
           <button class="boton-enlace boton-e" data-tooltip="${item.E_titulo}" onclick="window.open('${item.E_url}', '_blank')">E</button>
         </div>
       </div>
+      <div class="audicion-info">${item.Info || ''}</div>
     `;
     contenedor.appendChild(bloque);
 
